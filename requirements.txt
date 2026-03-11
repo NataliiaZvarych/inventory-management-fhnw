@@ -1,0 +1,10 @@
+# nicegui — library for the web interface (frontend), builds pages and UI
+nicegui>=2.0.0
+
+# sqlalchemy — ORM for database models and backend services
+# Allows creating tables, relationships, and managing data through Python
+sqlalchemy>=2.0.0
+
+# python-dotenv — loads environment variables from .env files
+# Used for confidential settings like database URL or secret keys
+python-dotenv>=1.0.0
