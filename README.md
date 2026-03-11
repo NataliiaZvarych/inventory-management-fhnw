@@ -1,6 +1,6 @@
 ## Project Structure
 
-text...
+```text
 inventory-system/
 │
 ├─ README.md             # Main project documentation
@@ -29,5 +29,5 @@ inventory-system/
 │  │  └─ movement.py     # Inventory movement page
 │  │
 │  └─ seed.py            # Populate database with initial data
-...
+```
 
