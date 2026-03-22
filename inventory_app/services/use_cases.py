@@ -12,6 +12,14 @@ def get_all_products():
 def create_product(name, category_id, location_id, quantity, min_quantity):
     with get_session() as session:
 
+        existing_product = session.execute(
+            select(Product).where(Product.name == name)
+        ).scalars().first()
+
+        if existing_product:
+            print("Produkt existiert bereits")
+            return existing_product
+
         status = "available"
         if quantity <= min_quantity:
             status = "low_stock"
@@ -124,8 +132,10 @@ def borrow_product(product_id, user_id, amount):
         if product.quantity < amount:
             print("Nicht genug Bestand zum Ausleihen")
             return None
-
+        
+        # Bestand reduzieren
         product.quantity -= amount
+        # Status aktualisieren
 
         if product.quantity <= product.min_quantity:
             product.status = "low_stock"
@@ -154,9 +164,10 @@ def return_product(product_id, user_id, amount):
         if not product:
             print("Produkt nicht gefunden")
             return None
-
+        # Bestand erhöhen
         product.quantity += amount
 
+        # Status aktualisieren
         if product.quantity <= product.min_quantity:
             product.status = "low_stock"
         else:
