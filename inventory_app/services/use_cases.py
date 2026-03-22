@@ -186,4 +186,20 @@ def return_product(product_id, user_id, amount):
         session.commit()
 
         return product
+
+import csv
+
+def export_products_to_csv(filename="products.csv"):
+    with get_session() as session:
+        products = session.execute(select(Product)).scalars().all()
+
+        with open(filename, mode="w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+
+            writer.writerow(["id", "name", "quantity", "status"])
+
+            for p in products:
+                writer.writerow([p.id, p.name, p.quantity, p.status])
+
+    print(f"CSV exportiert: {filename}")   
     

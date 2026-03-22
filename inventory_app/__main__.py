@@ -1,45 +1,31 @@
 from inventory_app.infra.db import create_db_and_tables
 from inventory_app.infra.seed import seed_data
-
 from inventory_app.services.use_cases import (
-    create_product,
-    increase_stock,
-    decrease_stock,
+    get_all_products,
     borrow_product,
-    return_product
+    return_product,
+    export_products_to_csv,
 )
 
 if __name__ == "__main__":
     create_db_and_tables()
     seed_data()
 
-    print("\n--- TEST RETURN PRODUCT ---")
+    print("\n--- PRODUCT LIST ---")
+    products = get_all_products()
 
-    # Crear producto (si ya existe no se duplica)
-    product = create_product(
-        name="Pullover Grau",
-        category_id=1,
-        location_id=1,
-        quantity=3,
-        min_quantity=5,
-    )
+    for p in products:
+        print(f"{p.id} | {p.name} | {p.quantity} | {p.status}")
 
-    print("Start:", product.name, product.quantity, product.status)
+    print("\n--- BORROW PRODUCT ---")
+    borrowed = borrow_product(product_id=1, user_id=2, amount=1)
+    if borrowed:
+        print(f"After borrow: {borrowed.quantity} ({borrowed.status})")
 
-    # Reducir stock
-    reduced = decrease_stock(
-        product_id=product.id,
-        user_id=1,
-        amount=1
-    )
+    print("\n--- RETURN PRODUCT ---")
+    returned = return_product(product_id=1, user_id=2, amount=1)
+    if returned:
+        print(f"After return: {returned.quantity} ({returned.status})")
 
-    print("Nach Reduzierung:", reduced.quantity, reduced.status)
-
-    # Devolver producto
-    returned = return_product(
-        product_id=product.id,
-        user_id=1,
-        amount=5
-    )
-
-    print("Nach Rückgabe:", returned.quantity, returned.status)
+    print("\n--- EXPORT CSV ---")
+    export_products_to_csv()
