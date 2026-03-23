@@ -5,6 +5,9 @@ nicegui>=2.0.0
 # Allows creating tables, relationships, and managing data through Python
 sqlalchemy>=2.0.0
 
+# sqlmodel — typed models built on SQLAlchemy and Pydantic
+sqlmodel>=0.0.22
+
 # python-dotenv — loads environment variables from .env files
 # Used for confidential settings like database URL or secret keys
 python-dotenv>=1.0.0
