@@ -1,30 +1,15 @@
-"""Location model definition for the inventory domain.
-
-This file contains the SQLModel class that represents physical storage locations.
-"""
-
-from __future__ import annotations
-
-from typing import List, Optional
-
+from typing import Optional, TYPE_CHECKING
 from sqlmodel import Field, Relationship, SQLModel
+
+if TYPE_CHECKING:
+    from app.models.product import Product
 
 
 class Location(SQLModel, table=True):
-	"""Database table for storage locations.
+    __tablename__ = "locations"
 
-	A location indicates where products are stored
-	(for example, "Main Warehouse" or "Shelf A3").
-	"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str = Field(nullable=False, unique=True, index=True)
+    description: Optional[str] = Field(default=None, nullable=True)
 
-	# Primary key for the location table.
-	# It is optional in Python instances until persisted by the database.
-	id: Optional[int] = Field(default=None, primary_key=True)
-
-	# Human-readable location name displayed across the application.
-	# Index is enabled to make filtering/searching by location faster.
-	name: str = Field(nullable=False, index=True)
-
-	# One-to-many relationship:
-	# one location can store many products.
-	products: List["Product"] = Relationship(back_populates="location")
+    products: list["Product"] = Relationship(back_populates="location")
