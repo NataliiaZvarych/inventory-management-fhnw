@@ -1,7 +1,10 @@
 from nicegui import ui
 
 ui.label('Inventory Management App')
-ui.input('Product name')
-ui.button('Add Product')
+
+with ui.row():
+    ui.button('Dashboard')
+    ui.button('Products')
+    ui.button('Add Product')
 
 ui.run()
