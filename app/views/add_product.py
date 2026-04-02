@@ -1,0 +1,1 @@
+# Add product view - placeholder for future UI

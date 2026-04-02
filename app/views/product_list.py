@@ -1,0 +1,1 @@
+# Product list view - placeholder for future UI
