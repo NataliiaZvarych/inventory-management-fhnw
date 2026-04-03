@@ -132,6 +132,242 @@ ___
 
 ![UML Class Diagram](app/docs/architecture-diagrams/ClassDiagram.png)
 
+### Layers
+
+- **Presentation layer** (NiceGUI )
+- **Application logic** (business logic)
+- **Persistence layer** (database & ORM)
+
+### Design Decisions
+
+- Separation of concerns
+- Modular and extensible structure
+- Use of an ORM (SQLModel)
+- Backend-first approach
+- Preparation for future UI integration
+
+### Patterns Used
+
+- Layered architecture
+- ORM pattern
+- Repository-like structure
+
+---
+## 🗄️ Database and ORM
+
+> 🚧 Add architecture-diagram
+
+The application uses **SQLModel** to map domain objects to a SQLite database.
+
+### Entities
+
+- `Product`
+- `Category`
+- `StorageLocation`
+- `User`
+- `StockMovement`
+
+### Relationships
+
+## 1.One-to-Many (1→n)
+
+- `Category` → `Product`: One category (e.g., "Electronics") contains many products.
+- `StorageLocation` → `Product`: One shelf or room holds many different items.
+- `User` → `Movement`: One person can perform many stock changes.
+- `Product` → `Movement`: One item has a long history of many ins and outs.
+
+## 2. Inheritance ("Is-A")
+
+- `User` ← `Admin` / `Staff`: An Admin is a User with extra permissions.
+- `Category` ← `SaleCategory` / `LoanCategory`: A LoanCategory is a Category with a return deadline.
+
+---
+
+## ✅ Project Requirements
+
+---
+
+### 1. Browser-based App (NiceGUI)
+
+The application interacts with the user via a modern web interface. Users can:
+- Navigate a Dashboard: View real-time stock statistics and low-stock warnings.
+- Manage Inventory: Create and edit products, categories, and storage locations.
+- Record Movements: Perform "Check-in/Check-out" (Increase/Decrease stock) or "Loan/Return" operations.
+- Generate Reports: Receive an inventory summary or movement log generated as a CSV file.
+
+**Architecture note:** The browser is a thin client; UI state and business logic (e.g., role-based access and stock calculations) live on the server-side NiceGUI app.
+
+### 2. Data Validation
+
+The application validates all user input to ensure data integrity and a smooth user experience.
+These checks prevent crashes and guide the user to provide correct input, matching the validation requirements:
+- Availability Checks: Prevents reducing stock below zero and validates minimum stock levels.
+- Role-Based Access: Ensures only Admins can delete data or manage users, while Staff can only view and move items.
+- Format Validation: Ensures product quantities are positive integers and return deadlines are valid future dates.
+
+### 3. Database Management
+
+All relevant data is managed via an ORM (SQLModel). This ensures a clean separation between the database and the Python code. Key entities managed include:
+- Users: Admin and Staff accounts with encrypted credentials.
+- Products & Categories: Managing the relationship between items and their classification (Sale vs. Loan).
+- Movements: A complete audit trail linking every stock change to a specific user and timestamp.
+
+### Technology
+
+- Python 3.x  
+- NiceGUI  
+- SQLModel  
+- ReportLab  
+- pytest  
+
+---
+
+### 📚 Libraries Used
+
+- **nicegui** – UI framework  
+- **sqlmodel** – ORM  
+- **sqlalchemy** – database toolkit  
+- **reportlab** – PDF generation  
+- **python-dotenv** – configuration  
+- **pytest** – testing  
+- **pytest-cov** – coverage
+
+
+---
+
+## 📂 Repository Structure
+
+```text
+.
+├── README.md
+├── app
+│   ├── db.py
+│   ├── docs
+│   │   └── ui-images
+│   ├── init_db.py
+│   ├── main.py
+│   ├── models
+│   │   ├── __init__.py
+│   │   ├── category.py
+│   │   ├── storagelocation.py
+│   │   ├── movement.py
+│   │   ├── product.py
+│   │   └── user.py
+│   ├── seed.py
+│   ├── services
+│   │   ├── inventory_service.py
+│   │   ├── product_service.py
+│   │   └── user_service.py
+│   ├── tests
+│   └── views
+│       ├── add_product.py
+│       ├── dashboard.py
+│       ├── movement.py
+│       ├── product_list.py
+│       └── ui.py
+├── inventory.db
+└── requirements.txt
+```
+---
+
+### How to Run
+
+> 🚧 Adjust to your project.
+
+### 1. Project Setup
+- Python 3.13 (or the course version) is required
+- Create and activate a virtual environment:
+   - **macOS/Linux:**
+      ```bash
+      python3 -m venv .venv
+      source .venv/bin/activate
+      ```
+   - **Windows:**
+      ```bash
+      python -m venv .venv
+      .venv\Scripts\Activate
+      ```
+- Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### 2. Configuration
+- E.g., setup of parameters or environment variables
+
+### 3. Launch
+- Start the NiceGUI app (example):
+   ```bash
+   py -m pizza_app
+   ```
+- Open the URL printed in the console.
+
+### 4. Usage (document as steps)
+
+> 🚧 Describe the usage of the main functions
+
+Order Pizza:
+1. Open the menu page and browse pizzas.
+2. Add items (with quantities) to the current order.
+3. Review total (incl. discounts) and validate inputs.
+4. Checkout to persist the order and generate the invoice.
+
+> 🚧 Add UI screenshots of the main screens (or a short video link):
+
+
+---
+
+## 🧪 Testing
+
+> 🚧 Explain what you test and how to run tests.
+
+**Test mix:**
+- Overall 12 tests
+- 6 Unit tests: e.g. subtotal calculation, discount application above CHF 50, no discount at or below threshold, total calculation
+- 3 DB tests: e.g. menu query returns seeded pizzas, saving an order persists order + order items, empty DB / empty transactions behavior
+- 3 Integration tests: e.g. checkout with one pizza creates order and invoice, checkout with multiple pizzas applies discount correctly
+
+**Template for writing test cases**
+1. Test case ID – unique identifier (e.g., TC_001)
+2. Test case title/description – What is the test about?
+3. Preconditions: Requirements before executing the test
+4. Test steps: Actions to perform
+5. Test data/input
+6. Expected result
+7. Actual result
+8. Status – pass or fail
+9. Comments – Additional notes or defect found
+
+---
+
+## 👥 Team & Contributions
+
+> 🚧 Fill in the names of all team members and describe their individual contributions below.
+
+| Name            | Contribution   |
+|-----------------|----------------|
+| Mahmut Altun    | NiceGUI UI     |
+| Josselyn Cabrera| Database & ORM |
+| Nataliia Zvarych| Business logic |
+| Aydin Ada       |  documentation |
+
+
+---
+
+## 🤝 Contributing
+
+> 🚧 This is a template repository for student projects.  
+> 🚧 Do not change this section in your final submission.
+
+- Use this repository as a starting point by importing it into your own GitHub account  
+- Work only within your own copy — do not push to the original template  
+- Commit regularly to track your progress  
+
+---
+
+## 📝 License
+
+This project is provided for **educational use only** as part of the Advanced Programming module.
 
 
   
