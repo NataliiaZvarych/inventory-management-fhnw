@@ -1,6 +1,6 @@
 # 📦 Inventory Management System – FHNW Projekt
 
-Dieses Projekt wurde im Rahmen des Moduls *Advanced Programming* im Studiengang **Wirtsachtsinformatik** an der FHNW entwickelt.
+Dieses Projekt wurde im Rahmen des Moduls *Objektorientierte Programmierung* im Studiengang **Wirtsachtsinformatik** an der FHNW entwickelt.
 Ziel des Projekts ist die Konzeption und Umsetzung eines strukturierten Backend-Systems unter Einsatz moderner Python-Technologien, klarer Architekturprinzipien sowie einer ORM-basierten Datenbankanbindung.
 
 ---
