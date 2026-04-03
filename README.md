@@ -167,16 +167,16 @@ The application uses **SQLModel** to map domain objects to a SQLite database.
 - `User`
 - `StockMovement`
 
-### Relationships
+## Relationships
 
-## 1.One-to-Many (1→n)
+### 1.One-to-Many (1→n)
 
 - `Category` → `Product`: One category (e.g., "Electronics") contains many products.
 - `StorageLocation` → `Product`: One shelf or room holds many different items.
 - `User` → `Movement`: One person can perform many stock changes.
 - `Product` → `Movement`: One item has a long history of many ins and outs.
 
-## 2. Inheritance ("Is-A")
+### 2. Inheritance ("Is-A")
 
 - `User` ← `Admin` / `Staff`: An Admin is a User with extra permissions.
 - `Category` ← `SaleCategory` / `LoanCategory`: A LoanCategory is a Category with a return deadline.
@@ -342,14 +342,12 @@ Order Pizza:
 
 ## 👥 Team & Contributions
 
-> 🚧 Fill in the names of all team members and describe their individual contributions below.
-
 | Name            | Contribution   |
 |-----------------|----------------|
 | Mahmut Altun    | NiceGUI UI     |
 | Josselyn Cabrera| Database & ORM |
 | Nataliia Zvarych| Business logic |
-| Aydin Ada       |  documentation |
+| Aydin Ada       | Documentation |
 
 
 ---
