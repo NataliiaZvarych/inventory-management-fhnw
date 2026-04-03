@@ -38,5 +38,33 @@ Sie ermöglicht die strukturierte Erfassung und Verwaltung von:
 
 Alle Informationen werden in einer relationalen Datenbank gespeichert, wodurch eine hohe Datenkonsistenz sowie eine lückenlose Nachvollziehbarkeit gewährleistet werden.
 
+## 👤 User Stories
 
+1. **Produkte verwalten**  
+   Als Benutzer möchte ich Produkte erstellen, bearbeiten und verwalten,  
+   damit der Lagerbestand vollständig und aktuell bleibt.  
+
+   **Input:** Produktname, Kategorie, Lagerort  
+   **Output:** Gespeichertes Produkt
+
+2. **Kategorien und Lagerorte verwalten**  
+   Als Benutzer möchte ich Kategorien und Lagerorte definieren und verwalten,  
+   um Produkte sinnvoll zu gruppieren und den Lagerort zuordnen zu können.  
+
+   **Input:** Kategorien- bzw. Lagerortdaten  
+   **Output:** Gespeicherte Einträge
+
+3. **Lagerbewegungen erfassen**  
+   Als Benutzer möchte ich Ein- und Ausgänge von Produkten dokumentieren,  
+   um die Bestände nachvollziehbar und aktuell zu halten.  
+
+   **Input:** Produkt, Menge, Benutzer  
+   **Output:** Bewegungsdatensatz
+
+4. **Benutzer verwalten**  
+   Als Administrator möchte ich Benutzer hinzufügen, bearbeiten und verwalten,  
+   damit nur autorisierte Personen Zugriff auf das System haben.  
+
+   **Input:** Benutzerdaten  
+   **Output:** Gespeicherter Benutzer
 
