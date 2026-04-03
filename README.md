@@ -130,7 +130,7 @@ ___
 
 ## 🏛️ Architecture
 
-![UML Class Diagram](docs/architecture-diagrams/ClassDiagram.png)
+![UML Class Diagram](app/docs/architecture-diagrams/ClassDiagram.png)
 
 
 
