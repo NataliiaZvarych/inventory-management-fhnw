@@ -130,7 +130,7 @@ ___
 
 ## 🏛️ Architecture
 
-![UML Class Diagram](app/docs/architecture-diagrams/ClassDiagram.png)
+![UML Class Diagram](app/docs/architecture-diagrams/Class_diagram.drawio.png)
 
 ### Layers
 
@@ -342,12 +342,12 @@ Order Pizza:
 
 ## 👥 Team & Contributions
 
-| Name            | Contribution   |
-|-----------------|----------------|
-| Mahmut Altun    | NiceGUI UI     |
-| Josselyn Cabrera| Database & ORM |
-| Nataliia Zvarych| Business logic |
-| Aydin Ada       | Documentation |
+| Name            | Contribution          |
+|-----------------|-----------------------|
+| Mahmut Altun    | NiceGUI UI            |
+| Josselyn Cabrera| Database & ORM        |
+| Nataliia Zvarych| Business logic        |
+| Aydin Ada       | Documentation, Testen |
 
 
 ---
