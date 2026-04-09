@@ -166,7 +166,7 @@ ___
 ---
 ## 🗄️ Database and ORM
 
-> 🚧 Add architecture diagram
+![ER Diagram](app/docs/architecture-diagrams/er_diagram.png)
 
 The application uses **SQLModel** to map domain objects to a SQLite database.
 
