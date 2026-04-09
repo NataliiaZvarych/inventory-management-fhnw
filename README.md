@@ -1,6 +1,6 @@
-# 📦 Inventory Management Projekt
+# 📦 Inventory Management Project
 
-> 🚧 add screenshot  ui-image
+![Dashboard Screenshot](app/docs/ui-images/dashboard.png)
 
 ---
 
@@ -14,23 +14,27 @@ In small and medium-sized enterprises, inventory management is often performed m
 - Inconsistent data
 - Lack of transparency in stock levels
 - Poor traceability of movements
-- A structured system is necessary to store and manage data reliably.
+
+A structured system is necessary to store and manage data reliably.
 
 ---
 
-### Scenario
+### 📖 Scenario
 
 The application allows users to:
-- manage products, categories, and storage locations
-- record inventory movements
-- store all data in a relational database
-- ensure data consistency and traceability
 
-  ---
+- Manage products, categories, and storage locations  
+- Record inventory movements  
+- Track stock levels and detect low stock  
+- Manage loans and returns of items  
+- Store all data in a relational database  
+- Export data for reporting purposes  
+
+---
 
 ## 📖 User Stories
 
-### 1.Manage Products
+### 1. Manage Products
 **As a user, I want to create and manage products.**
 
 - **Inputs:** Product name, category, storage location 
@@ -38,7 +42,7 @@ The application allows users to:
 
 ___
 
-### 2.Manage Categories and Storage Locations
+### 2. Manage Categories and Storage Locations
 **As a user, I want to define categories and storage locations.**
 
 - **Input:** Category/storage location data
@@ -46,7 +50,7 @@ ___
 
 ---
 
-### 3.Record Inventory Movements
+### 3. Record Inventory Movements
 **As a user, I want to document movements in the inventory.**
 
 - **Input:** Product, quantity, user
@@ -54,7 +58,7 @@ ___
 
 ---
 
-### 4.Manage Users
+### 4. Manage Users
 **As a user, I want to manage users.**
 
 - **Input:** User data
@@ -62,15 +66,15 @@ ___
 
 ---
 
-### 5.Monitor Low Stock
-**As a user, I want to receive alerts when stock levels are low so that I can reorder items in time**
+### 5. Monitor Low Stock
+**As a user, I want to receive alerts when stock levels are low so that I can reorder items in time.**
 
 - **Inputs:** Product ID, current quantity, minimum stock level.
-- **Outputs:** Visual warning or status "Niedriger Bestand" in the UI.
+- **Outputs:** Visual low stock warning in the UI.
 
 ---
 
-### 6.Loan and Return Items
+### 6. Loan and Return Items
 **As a staff member, I want to borrow and return products to track their current usage.**
 
 - **Inputs:** Product, staff member (user), return deadline.
@@ -78,7 +82,7 @@ ___
 
 ---
 
-### 7.Export Data (Admin only)
+### 7. Export Data (Admin only)
 **As an admin, I want to export product lists and movement data to CSV for external reporting.**
 
 - **Inputs:** Selection of data (Products or Movements), date range. 
@@ -86,7 +90,7 @@ ___
 
 ---
 
-### 8.View Inventory History
+### 8. View Inventory History
 **As an admin, I want to see a log of all past movements to track who changed what and when.**
 
 - **Inputs:** Product ID or User ID.
@@ -104,15 +108,15 @@ ___
 
 ## 🧩 Use Cases
 
-> 🚧 add diagrams for use cases
+> 🚧 Add diagrams for use cases
 
 ### Main Use Cases
 
-- Manage Inventory Entities (CRUD)
-- Process Goods Transactions (In/Out)
-- Manage Loans and Returns
-- Audit and Export History (Admin)
-- User Authentication and Roles
+- Manage inventory entities (CRUD)  
+- Process goods transactions (in/out)  
+- Manage loans and returns  
+- Audit and export history (admin)  
+- User authentication and roles  
 
 ### Actors
 
@@ -134,9 +138,16 @@ ___
 
 ### Layers
 
-- **Presentation layer** (NiceGUI )
-- **Application logic** (business logic)
-- **Persistence layer** (database & ORM)
+- **Presentation Layer (NiceGUI):** UI components and user interaction  
+- **Application Layer (Services):** business logic and validation  
+- **Persistence Layer:** database access via ORM  
+
+### Layer Responsibilities
+
+- **Views:** handle UI and user interaction  
+- **Services:** implement business rules and workflows  
+- **Models:** represent domain entities and relationships  
+- **Database:** manage persistence and connections  
 
 ### Design Decisions
 
@@ -155,7 +166,7 @@ ___
 ---
 ## 🗄️ Database and ORM
 
-> 🚧 Add architecture-diagram
+> 🚧 Add architecture diagram
 
 The application uses **SQLModel** to map domain objects to a SQLite database.
 
@@ -169,12 +180,12 @@ The application uses **SQLModel** to map domain objects to a SQLite database.
 
 ## Relationships
 
-### 1.One-to-Many (1→n)
+### 1. One-to-Many (1→n)
 
 - `Category` → `Product`: One category (e.g., "Electronics") contains many products.
 - `StorageLocation` → `Product`: One shelf or room holds many different items.
-- `User` → `Movement`: One person can perform many stock changes.
-- `Product` → `Movement`: One item has a long history of many ins and outs.
+- `User` → `StockMovement`: One person can perform many stock changes.
+- `Product` → `StockMovement``: One item has a long history of many ins and outs.
 
 ### 2. Inheritance ("Is-A")
 
@@ -217,7 +228,7 @@ All relevant data is managed via an ORM (SQLModel). This ensures a clean separat
 - Python 3.x  
 - NiceGUI  
 - SQLModel  
-- ReportLab  
+- SQLAlchemy
 - pytest  
 
 ---
@@ -227,10 +238,10 @@ All relevant data is managed via an ORM (SQLModel). This ensures a clean separat
 - **nicegui** – UI framework  
 - **sqlmodel** – ORM  
 - **sqlalchemy** – database toolkit  
-- **reportlab** – PDF generation  
 - **python-dotenv** – configuration  
 - **pytest** – testing  
-- **pytest-cov** – coverage
+- **pytest-cov** – coverage  
+- **csv / pandas** – data export  
 
 
 ---
@@ -293,39 +304,58 @@ All relevant data is managed via an ORM (SQLModel). This ensures a clean separat
    ```
 
 ### 2. Configuration
-- E.g., setup of parameters or environment variables
+- Ensure the SQLite database is available.
+- If needed, initialize and seed the database:
+   ```bash
+   python app/init_db.py
+   python app/seed.py
+   ```
 
 ### 3. Launch
-- Start the NiceGUI app (example):
+- Start the NiceGUI app:
    ```bash
-   py -m pizza_app
+   python app/main.py
    ```
 - Open the URL printed in the console.
 
 ### 4. Usage (document as steps)
 
-> 🚧 Describe the usage of the main functions
+> 🚧 Describe the main application workflows
 
-Order Pizza:
-1. Open the menu page and browse pizzas.
-2. Add items (with quantities) to the current order.
-3. Review total (incl. discounts) and validate inputs.
-4. Checkout to persist the order and generate the invoice.
 
-> 🚧 Add UI screenshots of the main screens (or a short video link):
+1. Open the dashboard in the browser
+2. Create categories and storage locations
+3. Add new products and assign them
+4. Record stock movements (check-in / check-out)
+5. Perform loan and return operations
+6. Monitor low stock warnings
+7. Export data to CSV (admin only)
+
+> 🚧 Add UI screenshots of the main screens (dashboard, products, movements)
 
 
 ---
 
 ## 🧪 Testing
 
-> 🚧 Explain what you test and how to run tests.
+The project includes unit tests, database tests, and integration tests.
 
 **Test mix:**
 - Overall 12 tests
-- 6 Unit tests: e.g. subtotal calculation, discount application above CHF 50, no discount at or below threshold, total calculation
-- 3 DB tests: e.g. menu query returns seeded pizzas, saving an order persists order + order items, empty DB / empty transactions behavior
-- 3 Integration tests: e.g. checkout with one pizza creates order and invoice, checkout with multiple pizzas applies discount correctly
+- Unit tests: validation rules, calculations, and business logic
+- Database tests: persistence and ORM behavior
+- Integration tests: complete workflows
+
+**Example of tested functionality:**
+- Product creation and validation
+- Category assignment
+- Stock movement handling
+- Prevention of negative stock
+- Loan and return workflows
+- Low stock detection
+- Role validation
+- Data persistence
+- CSV export
 
 **Template for writing test cases**
 1. Test case ID – unique identifier (e.g., TC_001)
@@ -347,19 +377,18 @@ Order Pizza:
 | Mahmut Altun    | NiceGUI UI            |
 | Josselyn Cabrera| Database & ORM        |
 | Nataliia Zvarych| Business logic        |
-| Aydin Ada       | Documentation, Testen |
+| Aydin Ada       | Documentation, Testing|
 
 
 ---
 
 ## 🤝 Contributing
 
-> 🚧 This is a template repository for student projects.  
-> 🚧 Do not change this section in your final submission.
+This is a template repository for student projects.
 
-- Use this repository as a starting point by importing it into your own GitHub account  
-- Work only within your own copy — do not push to the original template  
-- Commit regularly to track your progress  
+- Use this repository as a starting point by importing it into your own GitHub account
+- Work only within your own copy — do not push to the original template
+- Commit regularly to track your progress
 
 ---
 
