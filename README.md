@@ -108,7 +108,7 @@ ___
 
 ## 🧩 Use Cases
 
-> 🚧 Add diagrams for use cases
+![Use Case Diagram](app/docs/architecture-diagrams/use_case_diagram.png)
 
 ### Main Use Cases
 
