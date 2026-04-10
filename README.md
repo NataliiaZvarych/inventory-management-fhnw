@@ -134,8 +134,9 @@ ___
 ![Dashboard Screenshot](app/docs/architecture-diagrams/ui_product_staff.png)
 ---
 
+## 🏛️ High level package diagram
+![Dashboard Screenshot](app/docs/architecture-diagrams/hige-level-package-diagram.png.png)
 ## 🏛️ Architecture
-
 ![UML Class Diagram](app/docs/architecture-diagrams/Class_diagram.drawio.png)
 
 ### Layers
