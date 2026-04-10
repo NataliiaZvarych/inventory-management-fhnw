@@ -129,6 +129,7 @@ ___
 
 ![Dashboard Screenshot](app/docs/architecture-diagrams/ui_product.png)
 
+![Dashboard Screenshot](app/docs/architecture-diagrams/ui_product_admin.png)
 
 ---
 
