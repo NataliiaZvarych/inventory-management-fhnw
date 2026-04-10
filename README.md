@@ -131,6 +131,7 @@ ___
 
 ![Dashboard Screenshot](app/docs/architecture-diagrams/ui_product_admin.png)
 
+![Dashboard Screenshot](app/docs/architecture-diagrams/ui_product_staff.png)
 ---
 
 ## 🏛️ Architecture
