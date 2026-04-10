@@ -127,8 +127,8 @@ ___
 
 ### Wireframes / Mockups
 
+![Dashboard Screenshot](app/docs/architecture-diagrams/ui_product.png)
 
-> 🚧 Add screenshots of the wireframe mockups you chose to implement.
 
 ---
 
