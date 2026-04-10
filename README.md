@@ -1,6 +1,6 @@
 # 📦 Inventory Management Project
 
-![Dashboard Screenshot](app/docs/ui-images/dashboard.png)
+![Dashboard Screenshot](app/docs/architecture-diagrams/ui_main_menu.png)
 
 ---
 
@@ -382,15 +382,6 @@ The project includes unit tests, database tests, and integration tests.
 
 ---
 
-## 🤝 Contributing
-
-This is a template repository for student projects.
-
-- Use this repository as a starting point by importing it into your own GitHub account
-- Work only within your own copy — do not push to the original template
-- Commit regularly to track your progress
-
----
 
 ## 📝 License
 
