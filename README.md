@@ -4,7 +4,7 @@
 
 ---
 
-This project was developed as part of the Advanced Programming module at FHNW (BSc Business Information Technology). The goal is to implement a structured backend system using modern Python technologies, clean architecture principles, and ORM-based database management.
+Dieses Projekt wurde im Rahmen des Moduls Objektorientierte Programmierung im Studiengang Wirtsachtsinformatik an der FHNW entwickelt. Ziel des Projekts ist die Konzeption und Umsetzung eines strukturierten Backend-Systems unter Einsatz moderner Python-Technologien, klarer Architekturprinzipien sowie einer ORM-basierten Datenbankanbindung.
 
 ---
 
