@@ -1,55 +1,26 @@
+from sqlmodel import select
 from app.db import get_session
-from app.models import Category, Location, User, Product, Movement
+from app.models import Product, User, Category, StorageLocation, StockMovement
 
 
-def seed_test_data():
+def test_database_connection():
     with get_session() as session:
-        # Create category
-        category = Category(name="Electronics", description="Electronic devices")
-        session.add(category)
+        products = session.exec(select(Product)).all()
+        users = session.exec(select(User)).all()
+        categories = session.exec(select(Category)).all()
+        locations = session.exec(select(StorageLocation)).all()
+        movements = session.exec(select(StockMovement)).all()
 
-        # Create location
-        location = Location(name="Main Warehouse", description="Central storage")
-        session.add(location)
+        print("Database connection successful.")
+        print(f"Products: {len(products)}")
+        print(f"Users: {len(users)}")
+        print(f"Categories: {len(categories)}")
+        print(f"Locations: {len(locations)}")
+        print(f"Movements: {len(movements)}")
 
-        # Create user
-        user = User(username="admin", email="admin@example.com", role="admin")
-        session.add(user)
-
-        session.commit()
-
-        # Refresh objects to get IDs
-        session.refresh(category)
-        session.refresh(location)
-        session.refresh(user)
-
-        # Create product
-        product = Product(
-            name="Laptop",
-            description="Dell Latitude",
-            quantity=10,
-            min_quantity=2,
-            status="available",
-            category_id=category.id,
-            location_id=location.id,
-        )
-        session.add(product)
-        session.commit()
-        session.refresh(product)
-
-        # Create movement
-        movement = Movement(
-            product_id=product.id,
-            user_id=user.id,
-            movement_type="in",
-            quantity=10,
-            note="Initial stock"
-        )
-        session.add(movement)
-        session.commit()
-
-        print("Test data inserted successfully.")
+        for p in products:
+            print(f"- {p.name} (Stock: {p.quantity})")
 
 
 if __name__ == "__main__":
-    seed_test_data()
+    test_database_connection()

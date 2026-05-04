@@ -1,119 +1,73 @@
-from sqlmodel import select
-
-from app.db import get_session
-from app.models import Category, Location, User, Product, Movement
+from app.db import get_session, create_db_and_tables
+from app.models import Category, StorageLocation, User, Product
 
 
 def seed_database():
+    create_db_and_tables()
+
     with get_session() as session:
-        # Check if seed data already exists
-        existing_category = session.exec(
-            select(Category).where(Category.name == "Electronics")
-        ).first()
 
-        if existing_category:
-            print("Seed data already exists. Skipping seeding.")
-            return
+        # 📦 Categories
+        electronics = Category(name="Electronics", type="sale")
+        office = Category(name="Office", type="sale")
+        tools = Category(name="Tools", type="loan")
 
-        # Create categories
-        electronics = Category(
-            name="Electronics",
-            description="Electronic devices"
-        )
-        office = Category(
-            name="Office",
-            description="Office supplies"
-        )
+        # 📍 Storage Locations
+        shelf_a1 = StorageLocation(name="Shelf A1")
+        shelf_a2 = StorageLocation(name="Shelf A2")
+        workshop = StorageLocation(name="Workshop")
 
-        session.add(electronics)
-        session.add(office)
+        # 👤 Users (your team)
+        users = [
+            User(name="Nataliia", role="admin"),
+            User(name="Mahmut", role="staff"),
+            User(name="Aydin", role="staff"),
+            User(name="Josselyn", role="admin"),
+        ]
+
+        session.add_all([electronics, office, tools, shelf_a1, shelf_a2, workshop] + users)
         session.commit()
+
+        # 🔄 Refresh to get IDs
         session.refresh(electronics)
         session.refresh(office)
-
-        # Create locations
-        main_warehouse = Location(
-            name="Main Warehouse",
-            description="Central storage area"
-        )
-        shelf_a1 = Location(
-            name="Shelf A1",
-            description="Shelf for frequently used items"
-        )
-
-        session.add(main_warehouse)
-        session.add(shelf_a1)
-        session.commit()
-        session.refresh(main_warehouse)
+        session.refresh(tools)
         session.refresh(shelf_a1)
+        session.refresh(shelf_a2)
+        session.refresh(workshop)
 
-        # Create users
-        admin = User(
-            username="admin",
-            email="admin@example.com",
-            role="admin"
-        )
-        employee = User(
-            username="employee1",
-            email="employee1@example.com",
-            role="employee"
-        )
+        # 📦 Products
+        products = [
+            Product(
+                name="A4 Paper",
+                description="500 sheets",
+                quantity=8,
+                minimum_stock=10,
+                category_id=office.category_id,
+                storage_location_id=shelf_a1.storage_location_id,
+            ),
+            Product(
+                name="USB-C Cable",
+                description="2m cable",
+                quantity=15,
+                minimum_stock=5,
+                category_id=electronics.category_id,
+                storage_location_id=shelf_a2.storage_location_id,
+            ),
+            Product(
+                name="Drill",
+                description="18V battery drill",
+                quantity=3,
+                minimum_stock=2,
+                category_id=tools.category_id,
+                storage_location_id=workshop.storage_location_id,
+            ),
+        ]
 
-        session.add(admin)
-        session.add(employee)
-        session.commit()
-        session.refresh(admin)
-        session.refresh(employee)
-
-        # Create products
-        laptop = Product(
-            name="Laptop",
-            description="Dell Latitude laptop",
-            quantity=10,
-            min_quantity=2,
-            status="available",
-            category_id=electronics.id,
-            location_id=main_warehouse.id,
-        )
-
-        mouse = Product(
-            name="Mouse",
-            description="Wireless office mouse",
-            quantity=25,
-            min_quantity=5,
-            status="available",
-            category_id=office.id,
-            location_id=shelf_a1.id,
-        )
-
-        session.add(laptop)
-        session.add(mouse)
-        session.commit()
-        session.refresh(laptop)
-        session.refresh(mouse)
-
-        # Create movements
-        movement_1 = Movement(
-            product_id=laptop.id,
-            user_id=admin.id,
-            movement_type="in",
-            quantity=10,
-            note="Initial stock"
-        )
-
-        movement_2 = Movement(
-            product_id=mouse.id,
-            user_id=employee.id,
-            movement_type="in",
-            quantity=25,
-            note="Initial stock"
-        )
-
-        session.add(movement_1)
-        session.add(movement_2)
+        session.add_all(products)
         session.commit()
 
-        print("Database seeded successfully.")
+        print("Seed data inserted successfully.")
 
 
 if __name__ == "__main__":

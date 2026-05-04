@@ -1,33 +1,15 @@
-## Project Structure
+# Inventory Management Projekt - Dokumentation Vorlage
 
-```text
-inventory-system/
+## Projektstruktur
+inventory-management-fhnw/
 │
-├─ README.md             # Main project documentation
-├─ requirements.txt      # Python dependencies
-├─ .gitignore            # Git ignore rules
+├─ Dokumentation/           # Alle Dokumentationsdateien
+│   ├─ Inventory_Management_Projekt_Dokumentation.md
+│   ├─ Tabellen.sql
+│   └─ UseCases.md
 │
-├─ app/                  # Main application source code
-│  ├─ main.py            # Entry point (starts backend and frontend)
-│  │
-│  ├─ models/            # Database models
-│  │  ├─ user.py         # User model
-│  │  ├─ product.py      # Product model
-│  │  ├─ category.py     # Category model
-│  │  ├─ location.py     # Location model
-│  │  └─ movement.py     # StockMovement model
-│  │
-│  ├─ services/          # Backend business logic
-│  │  ├─ product_service.py   # Product operations
-│  │  ├─ inventory_service.py # Inventory operations
-│  │  └─ user_service.py      # User operations
-│  │
-│  ├─ views/             # Frontend pages and UI
-│  │  ├─ dashboard.py    # Dashboard page
-│  │  ├─ product_list.py # Product list page
-│  │  ├─ add_product.py  # Add product page
-│  │  └─ movement.py     # Inventory movement page
-│  │
-│  └─ seed.py            # Populate database with initial data
-```
-
+├─ Diagramme/               # Visuelle Diagramme
+│   ├─ ERD.xml
+│   └─ UseCase.png
+│
+└─ app/                     # Projektbezogene Codes
