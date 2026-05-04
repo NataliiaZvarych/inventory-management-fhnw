@@ -1,24 +1,21 @@
-from datetime import datetime
-from typing import Optional, TYPE_CHECKING
-from sqlmodel import Field, Relationship, SQLModel
-
-if TYPE_CHECKING:
-    from app.models.product import Product
-    from app.models.user import User
+from datetime import datetime, timezone
+from typing import Optional
+from sqlmodel import SQLModel, Field, Relationship
 
 
-class Movement(SQLModel, table=True):
-    __tablename__ = "movements"
+class StockMovement(SQLModel, table=True):
+    __tablename__ = "stock_movement"
 
-    id: Optional[int] = Field(default=None, primary_key=True)
+    movement_id: Optional[int] = Field(default=None, primary_key=True)
 
-    product_id: int = Field(foreign_key="products.id", nullable=False)
-    user_id: int = Field(foreign_key="users.id", nullable=False)
+    product_id: int = Field(foreign_key="product.product_id")
+    user_id: int = Field(foreign_key="user.user_id")
 
-    movement_type: str = Field(nullable=False)
-    quantity: int = Field(nullable=False)
-    created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-    note: Optional[str] = Field(default=None, nullable=True)
+    quantity: int = Field(gt=0)
+    movement_type: str = Field(max_length=50)
+    note: Optional[str] = Field(default=None)
+
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     product: Optional["Product"] = Relationship(back_populates="movements")
     user: Optional["User"] = Relationship(back_populates="movements")

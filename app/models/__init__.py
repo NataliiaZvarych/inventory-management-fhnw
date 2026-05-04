@@ -1,5 +1,13 @@
-from app.models.category import Category
-from app.models.location import Location
-from app.models.user import User
-from app.models.product import Product
-from app.models.movement import Movement
+from .category import Category
+from .storagelocation import StorageLocation
+from .user import User
+from .product import Product
+from .movement import StockMovement
+
+__all__ = [
+    "Category",
+    "StorageLocation",
+    "User",
+    "Product",
+    "StockMovement",
+]

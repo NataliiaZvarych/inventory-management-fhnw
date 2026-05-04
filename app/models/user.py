@@ -1,16 +1,14 @@
-from typing import Optional, TYPE_CHECKING
-from sqlmodel import Field, Relationship, SQLModel
-
-if TYPE_CHECKING:
-    from app.models.movement import Movement
+from typing import Optional, List
+from sqlmodel import SQLModel, Field, Relationship
 
 
 class User(SQLModel, table=True):
-    __tablename__ = "users"
+    __tablename__ = "user"
 
-    id: Optional[int] = Field(default=None, primary_key=True)
-    username: str = Field(nullable=False, unique=True, index=True)
-    email: str = Field(nullable=False, unique=True, index=True)
-    role: str = Field(default="employee", nullable=False)
+    user_id: Optional[int] = Field(default=None, primary_key=True)
 
-    movements: list["Movement"] = Relationship(back_populates="user")
+    name: str = Field(max_length=100)
+    role: str = Field(default="staff", max_length=50)
+    password_hash: Optional[str] = Field(default=None, max_length=255)
+
+    movements: List["StockMovement"] = Relationship(back_populates="user")
