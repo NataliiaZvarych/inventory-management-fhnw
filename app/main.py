@@ -14,8 +14,8 @@ Run examples:
 
 import argparse
 
-from app.db import create_db_and_tables
-from app.seed import seed_database
+from app.data_access.db import create_db_and_tables
+from app.data_access.seed import seed_database
 
 
 def run(init_db: bool, seed: bool) -> None:
