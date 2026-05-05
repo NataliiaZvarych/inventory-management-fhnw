@@ -1,4 +1,4 @@
-from app.db import get_session, create_db_and_tables
+from app.data_access.db import get_session, create_db_and_tables
 from app.models import Category, StorageLocation, User, Product
 
 
