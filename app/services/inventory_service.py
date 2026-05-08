@@ -2,7 +2,7 @@ from typing import Optional
 
 from sqlmodel import Session, select
 
-from app.models import StockMovement, StorageLocation, User
+from app.models import StockMovement, StorageLocation, User, Product
 
 
 class InventoryService:
