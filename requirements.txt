@@ -1,6 +1,10 @@
 # nicegui — library for the web interface (frontend), builds pages and UI
 nicegui>=2.0.0
 
+# sqlmodel — combines Pydantic + SQLAlchemy for simple ORM models
+# Used directly in app/db.py and all files in app/models/
+sqlmodel>=0.0.22
+
 # sqlalchemy — ORM for database models and backend services
 # Allows creating tables, relationships, and managing data through Python
 sqlalchemy>=2.0.0
@@ -8,3 +12,6 @@ sqlalchemy>=2.0.0
 # python-dotenv — loads environment variables from .env files
 # Used for confidential settings like database URL or secret keys
 python-dotenv>=1.0.0
+
+# pytest — simple testing framework for backend tests
+pytest>=8.0.0
