@@ -1,18 +1,17 @@
-from typing import Optional, List
-from sqlmodel import SQLModel, Field, Relationship
+from sqlmodel import SQLModel, Field
+from typing import Optional
 
 
 class User(SQLModel, table=True):
     __tablename__ = "user"
 
-    # Primary Key (ÖNEMLİ: id kullanıyoruz)
     id: Optional[int] = Field(default=None, primary_key=True)
 
-    name: str = Field(max_length=100)
-    role: str = Field(default="staff", max_length=50)
+    username: str = Field(index=True, nullable=False, unique=True)
+    email: str = Field(index=True, nullable=False, unique=True)
 
-    # şifre hash
-    password_hash: Optional[str] = Field(default=None, max_length=255)
+    # hashed password tutulur
+    password_hash: str = Field(nullable=False)
 
-    # İlişki: User -> StockMovement
-    movements: List["StockMovement"] = Relationship(back_populates="user")
+    # role örneği (opsiyonel ama projede var gibi görünüyor)
+    role: str = Field(default="user")
