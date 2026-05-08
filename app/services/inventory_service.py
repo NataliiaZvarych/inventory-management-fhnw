@@ -11,7 +11,7 @@ class InventoryService:
 	def __init__(self, session: Session):
 		self.session = session
 
-	def stock_in(self, product_id: int, user_id: int, quantity: int, note: Optional[str] = None) -> Movement:
+	def stock_in(self, product_id: int, user_id: int, quantity: int, note: Optional[str] = None) -> StockMovement:
 		"""Increase product quantity and create an 'in' movement."""
 		product = self._get_product_or_error(product_id)
 		self._validate_user_exists(user_id)
@@ -34,7 +34,7 @@ class InventoryService:
 		self.session.refresh(movement)
 		return movement
 
-	def stock_out(self, product_id: int, user_id: int, quantity: int, note: Optional[str] = None) -> Movement:
+	def stock_out(self, product_id: int, user_id: int, quantity: int, note: Optional[str] = None) -> StockMovement:
 		"""Decrease product quantity and create an 'out' movement."""
 		product = self._get_product_or_error(product_id)
 		self._validate_user_exists(user_id)
@@ -60,11 +60,11 @@ class InventoryService:
 		self.session.refresh(movement)
 		return movement
 
-	def get_movements(self, product_id: Optional[int] = None) -> list[Movement]:
+	def get_movements(self, product_id: Optional[int] = None) -> list[StockMovement]:
 		"""Return movement history, optionally filtered by product."""
-		statement = select(Movement).order_by(Movement.created_at.desc())
+		statement = select(StockMovement).order_by(StockMovement.created_at.desc())
 		if product_id is not None:
-			statement = statement.where(Movement.product_id == product_id)
+			statement = statement.where(StockMovement.product_id == product_id)
 		return list(self.session.exec(statement).all())
 
 	def get_low_stock_products(self) -> list[Product]:
