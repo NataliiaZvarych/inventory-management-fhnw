@@ -24,7 +24,12 @@ def base_data(session: Session) -> dict:
 	"""Insert minimum records needed by service tests."""
 	category = Category(name="Electronics", description="Electronic devices")
 	location = StorageLocation(name="Main Warehouse", description="Main storage")
-	user = User(name="admin", role="admin")
+	user = User(
+    username="admin",
+    email="admin@test.com",
+    password_hash="testhash",
+    role="admin"
+)
 
 	session.add(category)
 	session.add(location)
