@@ -1,5 +1,9 @@
-from sqlmodel import SQLModel, Field
-from typing import Optional
+from sqlmodel import SQLModel, Field, Relationship
+from typing import Optional, List, TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from .stock_movement import StockMovement
 
 
 class User(SQLModel, table=True):
@@ -10,8 +14,9 @@ class User(SQLModel, table=True):
     username: str = Field(index=True, nullable=False, unique=True)
     email: str = Field(index=True, nullable=False, unique=True)
 
-    # hashed password tutulur
     password_hash: str = Field(nullable=False)
 
-    # role örneği (opsiyonel ama projede var gibi görünüyor)
     role: str = Field(default="user")
+
+    # 🔥 RELATIONSHIP (kritik fix)
+    movements: List["StockMovement"] = Relationship(back_populates="user")
