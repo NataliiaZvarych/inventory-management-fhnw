@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy.pool import StaticPool
 from sqlmodel import Session, SQLModel, create_engine
 
-from app.models import Category, Location, Product, User
+from app.models import Category, StorageLocation, Product, User
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def session() -> Session:
 def base_data(session: Session) -> dict:
 	"""Insert minimum records needed by service tests."""
 	category = Category(name="Electronics", description="Electronic devices")
-	location = Location(name="Main Warehouse", description="Main storage")
+	location = StorageLocation(name="Main Warehouse", description="Main storage")
 	user = User(username="admin", email="admin@example.com", role="admin")
 
 	session.add(category)
