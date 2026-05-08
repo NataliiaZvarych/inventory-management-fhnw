@@ -2,7 +2,7 @@ from typing import Optional
 
 from sqlmodel import Session, select
 
-from app.models import Movement, StorageLocation, User
+from app.models import StockMovement, StorageLocation, User
 
 
 class InventoryService:
@@ -20,7 +20,7 @@ class InventoryService:
 		product.quantity += quantity
 		self._sync_product_status(product)
 
-		movement = Movement(
+		movement = StockMovement(
 			product_id=product.id,
 			user_id=user_id,
 			movement_type="in",
@@ -46,7 +46,7 @@ class InventoryService:
 		product.quantity -= quantity
 		self._sync_product_status(product)
 
-		movement = Movement(
+		movement = StockMovement(
 			product_id=product.id,
 			user_id=user_id,
 			movement_type="out",
