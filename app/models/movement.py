@@ -9,7 +9,7 @@ class StockMovement(SQLModel, table=True):
     movement_id: Optional[int] = Field(default=None, primary_key=True)
 
     product_id: int = Field(foreign_key="product.product_id")
-    user_id: int = Field(foreign_key="user.user_id")
+    user_id: int = Field(foreign_key="user.id")
 
     quantity: int = Field(gt=0)
     movement_type: str = Field(max_length=50)
