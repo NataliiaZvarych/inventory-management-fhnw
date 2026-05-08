@@ -2,7 +2,7 @@ from typing import Optional
 
 from sqlmodel import Session, select
 
-from app.models import Category, Location, Product
+from app.models import Category, StorageLocation, Product
 
 
 class ProductService:
