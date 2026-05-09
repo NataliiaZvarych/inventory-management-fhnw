@@ -19,6 +19,7 @@ class BaseDAO:
     
 # This class helps work with Product objects in the database
 class ProductDAO(BaseDAO):
+    
     def __init__(self, engine: Engine):
         super().__init__(engine)
 
@@ -58,6 +59,10 @@ class ProductDAO(BaseDAO):
         session.delete(product)
         session.commit()
         return True
+    
+    def get_by_category_id(self, session: Session, category_id: int) -> List[Product]:
+            statement = select(Product).where(Product.category_id == category_id)
+            return session.exec(statement).all()    
 
 
 # This class helps work with Category objects in the database
