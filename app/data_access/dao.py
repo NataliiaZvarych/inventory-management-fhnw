@@ -2,7 +2,7 @@
 
 from typing import List, Optional
 from sqlmodel import Session, select
-from sqlmodel import Engine
+from sqlalchemy.engine import Engine
 from app.models import Product, Category, StorageLocation, StockMovement, User
 
 # This is a base class for all DAOs

@@ -82,9 +82,9 @@ class MovementService:
         movement_data = {
             "product_id": product_id,
             "user_id": user_id,
-            "from_location_id": from_location_id,
-            "to_location_id": to_location_id,
-            "quantity": quantity
+            "location_id": to_location_id,  # destination becomes the new location
+            "quantity": quantity,
+            "movement_type": "move"
         }
         return self.create_movement(session, movement_data)
     
