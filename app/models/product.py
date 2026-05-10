@@ -15,10 +15,11 @@ class Product(SQLModel, table=True):
 
     status: str = Field(default="active", max_length=50)
 
-    # ✅ FIXED FOREIGN KEYS
+    # FK (DOĞRU)
     category_id: int = Field(foreign_key="category.id")
     storage_location_id: int = Field(foreign_key="storage_location.id")
 
+    # Relationships
     category: Optional["Category"] = Relationship(back_populates="products")
     storage_location: Optional["StorageLocation"] = Relationship(back_populates="products")
     movements: List["StockMovement"] = Relationship(back_populates="product")
