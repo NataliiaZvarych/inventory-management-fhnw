@@ -2,7 +2,7 @@
 
 from typing import List, Optional
 from sqlmodel import Session, select
-from sqlmodel import Engine
+from sqlalchemy.engine import Engine
 from app.models import Product, Category, StorageLocation, StockMovement, User
 
 # This is a base class for all DAOs
@@ -17,8 +17,9 @@ class BaseDAO:
         return Session(self.engine)
 
     
-# This class helps you work with Product objects in the database
+# This class helps work with Product objects in the database
 class ProductDAO(BaseDAO):
+    
     def __init__(self, engine: Engine):
         super().__init__(engine)
 
@@ -58,9 +59,13 @@ class ProductDAO(BaseDAO):
         session.delete(product)
         session.commit()
         return True
+    
+    def get_by_category_id(self, session: Session, category_id: int) -> List[Product]:
+            statement = select(Product).where(Product.category_id == category_id)
+            return session.exec(statement).all()    
 
 
-# This class helps you work with Category objects in the database
+# This class helps work with Category objects in the database
 class CategoryDAO(BaseDAO):
     def __init__(self, engine: Engine):
         super().__init__(engine)
@@ -98,7 +103,7 @@ class CategoryDAO(BaseDAO):
         return True
 
 
-# This class helps you work with StorageLocation objects in the database
+# This class helps work with StorageLocation objects in the database
 class StorageLocationDAO(BaseDAO):
     def __init__(self, engine: Engine):
         super().__init__(engine)
@@ -136,7 +141,7 @@ class StorageLocationDAO(BaseDAO):
         return True
 
 
-# This class helps you work with StockMovement objects in the database
+# This class helps work with StockMovement objects in the database
 class StockMovementDAO(BaseDAO):
     def __init__(self, engine: Engine):
         super().__init__(engine)
@@ -174,7 +179,7 @@ class StockMovementDAO(BaseDAO):
         return True
 
 
-# This class helps you work with User objects in the database
+# This class helps work with User objects in the database
 class UserDAO(BaseDAO):
     def __init__(self, engine: Engine):
         super().__init__(engine)
@@ -211,40 +216,5 @@ class UserDAO(BaseDAO):
         session.commit()
         return True
 
-    # Create a new product in the database
-    def create(self, session: Session, product: Product) -> Product:
-        session.add(product)
-        session.commit()
-        session.refresh(product)
-        return product
-
-    # Get one product by its id
-    def get(self, session: Session, product_id: int) -> Optional[Product]:
-        return session.get(Product, product_id)
-
-    # Get all products
-    def get_all(self, session: Session) -> List[Product]:
-        statement = select(Product)
-        return session.exec(statement).all()
-
-    # Update a product by its id
-    def update(self, session: Session, product_id: int, data: dict) -> Optional[Product]:
-        product = session.get(Product, product_id)
-        if not product:
-            return None
-        for key, value in data.items():
-            setattr(product, key, value)
-        session.add(product)
-        session.commit()
-        session.refresh(product)
-        return product
-
-    # Delete a product by its id
-    def delete(self, session: Session, product_id: int) -> bool:
-        product = session.get(Product, product_id)
-        if not product:
-            return False
-        session.delete(product)
-        session.commit()
-        return True
+    
 

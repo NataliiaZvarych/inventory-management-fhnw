@@ -1,56 +1,68 @@
 from typing import Optional
-
-from sqlmodel import Session, select
-
+from sqlmodel import Session
 from app.models import User
-
+from app.data_access.dao import UserDAO
+import hashlib
 
 class UserService:
-	"""Service with simple operations for users."""
+	def __init__(self, user_dao: UserDAO):
+		self.user_dao = user_dao
 
-	def __init__(self, session: Session):
-		self.session = session
-
-	def create_user(self, username: str, email: str, role: str = "employee") -> User:
-		"""Create and save a new user."""
-		self._validate_username(username)
-		self._validate_email(email)
-		self._validate_unique_user(username=username, email=email)
-
-		user = User(username=username.strip(), email=email.strip(), role=role.strip() or "employee")
-		self.session.add(user)
-		self.session.commit()
-		self.session.refresh(user)
+	def get_user(self, session: Session, user_id: int) -> User:
+		"""
+		Get a user by ID.
+		"""
+		user = self.user_dao.get(session, user_id)
+		if not user:
+			raise ValueError("User not found")
 		return user
 
-	def get_all_users(self) -> list[User]:
-		"""Return all users ordered by id."""
-		statement = select(User).order_by(User.id)
-		return list(self.session.exec(statement).all())
+	def update_user(self, session: Session, user_id: int, data: dict) -> User:
+		"""
+		Update user data by ID.
+		"""
+		user = self.user_dao.update(session, user_id, data)
+		if not user:
+			raise ValueError("User not found or update failed")
+		return user
 
-	def get_user_by_id(self, user_id: int) -> Optional[User]:
-		"""Return one user by id, or None."""
-		return self.session.get(User, user_id)
+	def delete_user(self, session: Session, user_id: int) -> bool:
+		"""
+		Delete a user by ID.
+		"""
+		result = self.user_dao.delete(session, user_id)
+		if not result:
+			raise ValueError("User not found")
+		return result
 
-	@staticmethod
-	def _validate_username(username: str) -> None:
-		if not username or not username.strip():
-			raise ValueError("Username cannot be empty")
+	def login(self, session: Session, name: str, password: str) -> Optional[User]:
+		"""
+		Authenticate user by name and password.
+		"""
+		# Simple authentication: find user by name and compare password hash
+		users = self.user_dao.get_all(session)
+		user = next((u for u in users if u.name == name), None)
+		if not user:
+			raise ValueError("User not found")
+		if not user.password_hash:
+			raise ValueError("User has no password set")
+		password_hash = hashlib.sha256(password.encode()).hexdigest()
+		if user.password_hash != password_hash:
+			raise ValueError("Incorrect password")
+		return user
 
-	@staticmethod
-	def _validate_email(email: str) -> None:
-		if not email or not email.strip():
-			raise ValueError("Email cannot be empty")
-
-	def _validate_unique_user(self, username: str, email: str) -> None:
-		existing_username = self.session.exec(
-			select(User).where(User.username == username.strip())
-		).first()
-		if existing_username is not None:
-			raise ValueError("Username already exists")
-
-		existing_email = self.session.exec(
-			select(User).where(User.email == email.strip())
-		).first()
-		if existing_email is not None:
-			raise ValueError("Email already exists")
+	def change_role(self, session: Session, user_id: int, new_role: str) -> User:
+		"""
+		Change the role of a user.
+		"""
+		allowed_roles = {"admin", "staff", "manager"}
+		if new_role not in allowed_roles:
+			raise ValueError(f"Role '{new_role}' is not allowed")
+		user = self.user_dao.get(session, user_id)
+		if not user:
+			raise ValueError("User not found")
+		user.role = new_role
+		session.add(user)
+		session.commit()
+		session.refresh(user)
+		return user
