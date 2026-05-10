@@ -8,7 +8,8 @@ class StockMovement(SQLModel, table=True):
 
     movement_id: Optional[int] = Field(default=None, primary_key=True)
 
-    product_id: int = Field(foreign_key="product.product_id")
+    # ✅ FIXED FK REFERENCES
+    product_id: int = Field(foreign_key="product.id")
     user_id: int = Field(foreign_key="user.id")
 
     quantity: int = Field(gt=0)
