@@ -1,14 +1,22 @@
 import hashlib
+
 import pytest
 from sqlalchemy.pool import StaticPool
 from sqlmodel import Session, SQLModel, create_engine
 
 from app.models import Category, StorageLocation, Product, User
-from app.data_access.dao import CategoryDAO, ProductDAO, StorageLocationDAO, UserDAO
+from app.data_access.dao import (
+    CategoryDAO,
+    ProductDAO,
+    StorageLocationDAO,
+    UserDAO,
+    StockMovementDAO,
+)
 from app.services.category_services import CategoryServices
 from app.services.location_services import LocationServices
 from app.services.product_services import ProductServices
 from app.services.user_service import UserService
+from app.services.movement_services import MovementService
 
 
 @pytest.fixture
@@ -34,12 +42,19 @@ def services(engine):
     product_dao = ProductDAO(engine)
     location_dao = StorageLocationDAO(engine)
     user_dao = UserDAO(engine)
+    movement_dao = StockMovementDAO(engine)
 
     return {
         "category": CategoryServices(category_dao, product_dao),
         "location": LocationServices(location_dao),
         "product": ProductServices(product_dao, category_dao, location_dao),
         "user": UserService(user_dao),
+        "movement": MovementService(
+            product_dao,
+            user_dao,
+            movement_dao,
+            location_dao,
+        ),
     }
 
 
