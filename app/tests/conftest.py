@@ -55,7 +55,7 @@ def base_data(session: Session) -> dict:
         min_quantity=2,
         status="available",
         category_id=category.id,
-        storage_location_id=location.storage_location_id,
+        storage_location_id=location.id,   # ✅ FIX HERE
     )
 
     session.add(product)
