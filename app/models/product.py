@@ -15,8 +15,12 @@ class Product(SQLModel, table=True):
 
     status: str = Field(default="active", max_length=50)
 
-    category_id: int = Field(foreign_key="category.category_id")
-    storage_location_id: int = Field(foreign_key="storage_location.storage_location_id")
+    # ✅ FIX: category.id olmalı (category_id DEĞİL)
+    category_id: int = Field(foreign_key="category.id")
+
+    storage_location_id: int = Field(
+        foreign_key="storage_location.storage_location_id"
+    )
 
     category: Optional["Category"] = Relationship(back_populates="products")
     storage_location: Optional["StorageLocation"] = Relationship(back_populates="products")
