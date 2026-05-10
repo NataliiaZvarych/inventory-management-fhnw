@@ -5,7 +5,7 @@ from sqlmodel import SQLModel, Field, Relationship
 class Product(SQLModel, table=True):
     __tablename__ = "product"
 
-    product_id: Optional[int] = Field(default=None, primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True)  # ✅ FIX
 
     name: str = Field(max_length=100)
     description: Optional[str] = Field(default=None, max_length=255)
