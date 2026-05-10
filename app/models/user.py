@@ -1,5 +1,5 @@
-from sqlmodel import SQLModel, Field
-from typing import Optional
+from sqlmodel import SQLModel, Field, Relationship
+from typing import Optional, List
 
 
 class User(SQLModel, table=True):
@@ -13,3 +13,6 @@ class User(SQLModel, table=True):
     password_hash: str = Field(nullable=False)
 
     role: str = Field(default="user")
+
+    # 🔥 FIX: StockMovement relation (SENİN HATAN BURADAN GELİYOR)
+    movements: List["StockMovement"] = Relationship(back_populates="user")
