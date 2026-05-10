@@ -12,15 +12,12 @@ class Product(SQLModel, table=True):
 
     quantity: int = Field(default=0, ge=0)
 
-    # test expects this name
     min_quantity: int = Field(default=0, ge=0)
 
     status: str = Field(default="active", max_length=50)
 
-    # FIX: category.category_id → category.id
     category_id: int = Field(foreign_key="category.id")
 
-    # FIX: location_id → storage_location_id
     storage_location_id: int = Field(
         foreign_key="storage_location.storage_location_id"
     )
