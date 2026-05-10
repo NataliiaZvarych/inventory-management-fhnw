@@ -29,8 +29,8 @@ def base_data(session: Session) -> dict:
     )
 
     location = StorageLocation(
-        name="Main Warehouse",
-        description="Main storage"
+        name="Main Warehouse"
+        # ❗ description kaldırıldı (modelde yok)
     )
 
     user = User(
@@ -55,8 +55,8 @@ def base_data(session: Session) -> dict:
         quantity=10,
         min_quantity=2,
         status="available",
-        category_id=category.id,
-        location_id=location.id,
+        category_id=category.category_id if hasattr(category, "category_id") else category.id,
+        storage_location_id=location.storage_location_id if hasattr(location, "storage_location_id") else location.id,
     )
 
     session.add(product)
