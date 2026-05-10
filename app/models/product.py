@@ -5,7 +5,7 @@ from sqlmodel import SQLModel, Field, Relationship
 class Product(SQLModel, table=True):
     __tablename__ = "product"
 
-    product_id: Optional[int] = Field(default=None, primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True)
 
     name: str = Field(max_length=100)
     description: Optional[str] = Field(default=None, max_length=255)
@@ -15,12 +15,9 @@ class Product(SQLModel, table=True):
 
     status: str = Field(default="active", max_length=50)
 
-    # ✅ FIX: category.id olmalı (category_id DEĞİL)
+    # ✅ FIXED FOREIGN KEYS
     category_id: int = Field(foreign_key="category.id")
-
-    storage_location_id: int = Field(
-        foreign_key="storage_location.storage_location_id"
-    )
+    storage_location_id: int = Field(foreign_key="storage_location.id")
 
     category: Optional["Category"] = Relationship(back_populates="products")
     storage_location: Optional["StorageLocation"] = Relationship(back_populates="products")
