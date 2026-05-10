@@ -1,6 +1,5 @@
 from typing import Optional
 from sqlmodel import Session, select
-
 from app.models import User
 
 
@@ -20,7 +19,7 @@ class UserService:
         user = User(
             username=username.strip(),
             email=email.strip(),
-            password_hash="testhash",  # ✅ FIX: required field
+            password_hash="testhash",  # testler için zorunlu alan
             role=role.strip() or "employee"
         )
 
@@ -53,12 +52,12 @@ class UserService:
             select(User).where(User.username == username.strip())
         ).first()
 
-        if existing_username is not None:
+        if existing_username:
             raise ValueError("Username already exists")
 
         existing_email = self.session.exec(
             select(User).where(User.email == email.strip())
         ).first()
 
-        if existing_email is not None:
+        if existing_email:
             raise ValueError("Email already exists")
