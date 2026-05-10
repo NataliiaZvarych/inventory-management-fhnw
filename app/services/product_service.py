@@ -34,7 +34,7 @@ class ProductService:
             min_quantity=min_quantity,
             status=status,
             category_id=category_id,
-            location_id=location_id,
+            storage_location_id=location_id,   # ✅ FIX HERE
         )
 
         self.session.add(product)
@@ -88,7 +88,7 @@ class ProductService:
 
         if location_id is not None:
             self._validate_location_exists(location_id)
-            product.location_id = location_id
+            product.storage_location_id = location_id   # ✅ FIX HERE
 
         if status is not None:
             product.status = status
@@ -125,6 +125,6 @@ class ProductService:
             raise ValueError(f"Category with id {category_id} not found")
 
     def _validate_location_exists(self, location_id: int) -> None:
-        location = self.session.get(StorageLocation, location_id)  # ✅ FIX
+        location = self.session.get(StorageLocation, location_id)
         if location is None:
             raise ValueError(f"Location with id {location_id} not found")
