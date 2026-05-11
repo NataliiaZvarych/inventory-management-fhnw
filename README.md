@@ -379,23 +379,25 @@ The following functionalities were tested:
 - Prevention of invalid stock movements
 - Database persistence and service logic validation
 
-**Test Enviroment**
+**Test Enviroment:**
+
 The test use:
 - pytest
 - SQLite in-memory database
 - SQLModel ORM
 - pytest fixtures for isolated test data
 
-**Test Execution**
+**Test Execution:**
+
 Command used to execute all tests:
 python -m pytest app/tests -v
 
-**Test Result**
+**Test Result:**
 - 28 tests passed
 - 0 failed
 - 0 errors
 
-**Test Case Documentation**
+**Test Case Documentation:**
 The project documentation includes:
 - detailed test cases
 - automated testing reports
@@ -403,7 +405,7 @@ The project documentation includes:
 The documentation files are available in:
 app/docs
 
-**Template for writing test cases**
+**Template for writing test cases:**
 1. Test case ID – unique identifier (e.g., TC_001)
 2. Test case title/description – What is the test about?
 3. Preconditions – Requirements before executing the test
