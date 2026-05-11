@@ -1,27 +1,20 @@
 from nicegui import ui
 
+from app.views.products.add_product import render_add_product_form
+from app.views.products.product_list import render_product_list
+
 @ui.page('/products')
 def products_page():
-    ui.label('Products Page').classes('text-h4')
-    
-    # Sample products data
-    products = [
-        {'id': 1, 'name': 'Product A', 'price': 29.99, 'stock': 15},
-        {'id': 2, 'name': 'Product B', 'price': 49.99, 'stock': 8},
-        {'id': 3, 'name': 'Product C', 'price': 19.99, 'stock': 0},
-    ]
-    
-    # Create a table to display products
-    columns = [
-        {'name': 'id', 'label': 'ID', 'field': 'id'},
-        {'name': 'name', 'label': 'Name', 'field': 'name'},
-        {'name': 'price', 'label': 'Price', 'field': 'price'},
-        {'name': 'stock', 'label': 'Stock', 'field': 'stock'},
-    ]
-    
-    ui.table(columns=columns, rows=products).classes('w-full')
-    
-    # Add new product button
-    with ui.row():
-        ui.button('Add Product', on_click=lambda: ui.notify('Add product clicked'))
-        ui.button('Refresh', on_click=lambda: ui.notify('Refreshed'))
+    ui.label('Products').classes('text-h4')
+
+    list_panel = ui.column().classes('w-full')
+
+    def refresh_list() -> None:
+        list_panel.clear()
+        render_product_list(list_panel)
+
+    with ui.row().classes('w-full q-col-gutter-md'):
+        with ui.column().classes('col-12 col-md-7'):
+            refresh_list()
+        with ui.column().classes('col-12 col-md-5'):
+            render_add_product_form(on_created=refresh_list)
