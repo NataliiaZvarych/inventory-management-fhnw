@@ -56,6 +56,10 @@ class ProductDAO(BaseDAO):
         product = session.get(Product, product_id)
         if not product:
             return False
+        # Delete all related stock movements first
+        movements = session.exec(select(StockMovement).where(StockMovement.product_id == product_id)).all()
+        for movement in movements:
+            session.delete(movement)
         session.delete(product)
         session.commit()
         return True
@@ -143,6 +147,8 @@ class StorageLocationDAO(BaseDAO):
 
 # This class helps work with StockMovement objects in the database
 class StockMovementDAO(BaseDAO):
+
+
     def __init__(self, engine: Engine):
         super().__init__(engine)
 
@@ -169,6 +175,10 @@ class StockMovementDAO(BaseDAO):
         session.commit()
         session.refresh(movement)
         return movement
+    
+    def get_by_product(self, session: Session, product_id: int) -> List[StockMovement]:
+        statement = select(StockMovement).where(StockMovement.product_id == product_id)
+        return session.exec(statement).all()
 
     def delete(self, session: Session, movement_id: int) -> bool:
         movement = session.get(StockMovement, movement_id)
