@@ -1,3 +1,6 @@
+# Run the console application:
+# python3 -m app.console_app
+
 from app.services import *
 from app.data_access.db import get_session, engine 
 from app.data_access.dao import *
