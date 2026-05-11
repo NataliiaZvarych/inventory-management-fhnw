@@ -24,6 +24,12 @@ class LocationServices:
 		if not location:
 			raise ValueError("Location not found")
 		return location
+	
+	def get_all_storage_locations(self, session: Session) -> List[StorageLocation]:
+		"""
+		Get all storage locations.
+		"""
+		return self.location_dao.get_all(session)
 
 	def update_location(self, session: Session, location_id: int, data: dict) -> StorageLocation:
 		"""
