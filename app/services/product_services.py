@@ -4,6 +4,13 @@ from app.models import Product
 from app.data_access.dao import ProductDAO, CategoryDAO, StorageLocationDAO
 
 class ProductServices:
+
+	def get_by_category_id(self, session: Session, category_id: int) -> List[Product]:
+		"""
+		Get all products by category ID.
+		"""
+		return self.product_dao.get_by_category_id(session, category_id)
+	
 	def __init__(self, product_dao: ProductDAO, category_dao: CategoryDAO, location_dao: StorageLocationDAO):
 		self.product_dao = product_dao
 		self.category_dao = category_dao
