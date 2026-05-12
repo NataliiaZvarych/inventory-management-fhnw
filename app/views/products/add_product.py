@@ -40,6 +40,12 @@ def render_add_product_form(on_created=None) -> None:
 			if not category_id.value or not location_id.value:
 				ui.notify("Category and location are required", type="negative")
 				return
+			if quantity.value < 0 or minimum_stock.value < 0:
+				ui.notify("Quantity and minimum stock cannot be negative", type="negative")
+				return
+			if quantity.value < minimum_stock.value:
+				ui.notify("Quantity cannot be less than minimum stock", type="negative")
+				return
 
 			product_data = {
 				"name": str(name.value).strip(),

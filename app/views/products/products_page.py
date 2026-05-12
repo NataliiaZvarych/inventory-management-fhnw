@@ -6,15 +6,24 @@ from app.views.products.product_list import render_product_list
 @ui.page('/products')
 def products_page():
     ui.label('Products').classes('text-h4')
+    ui.label('Manage your products here.').classes('text-grey-7')
+    ui.separator()
+
 
     list_panel = ui.column().classes('w-full')
 
     def refresh_list() -> None:
         list_panel.clear()
         render_product_list(list_panel)
+        
 
     with ui.row().classes('w-full q-col-gutter-md'):
         with ui.column().classes('col-12 col-md-7'):
+            ui.label('Product List').classes('text-h6')
+            list_panel = ui.column().classes('w-full')
             refresh_list()
         with ui.column().classes('col-12 col-md-5'):
+            ui.label('Add New Product').classes('text-h6')
+            ui.card().classes('w-full')
+
             render_add_product_form(on_created=refresh_list)

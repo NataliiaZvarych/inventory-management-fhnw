@@ -39,8 +39,16 @@ def _build_rows() -> list[dict]:
 
 def render_product_list(container) -> None:
 	container.clear()
+	rows = _build_rows()
+
 	with container:
 		ui.label("Product List").classes("text-h6")
+
+		if not rows:
+			ui.label("No products found.").classes("text-subtitle1")
+			return	
+		
+		
 
 		columns = [
 			{"name": "product_id", "label": "ID", "field": "product_id", "align": "left"},
@@ -57,4 +65,4 @@ def render_product_list(container) -> None:
 			{"name": "location", "label": "Location", "field": "location", "align": "left"},
 		]
 
-		ui.table(columns=columns, rows=_build_rows(), row_key="product_id").classes("w-full")
+		ui.table(columns=columns, rows=rows, row_key="product_id").classes("w-full")

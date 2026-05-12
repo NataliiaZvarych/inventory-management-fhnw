@@ -46,4 +46,16 @@ def dashboard_page() -> None:
 			type="warning",
 			timeout=3000,
 		)
+		ui.separator()
+
+with ui.row().classes("q-gutter-sm"):
+    ui.button(
+        "View Products",
+        on_click=lambda: ui.navigate.to("/products"),
+    ).props("color=primary")
+
+    ui.button(
+        "Add New Product",
+        on_click=lambda: ui.navigate.to("/products"),
+    ).props("outline")
 
