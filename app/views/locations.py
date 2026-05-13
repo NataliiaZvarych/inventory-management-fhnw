@@ -1,7 +1,9 @@
 from nicegui import ui
 
-from app.data_access.dao import ProductDAO, StorageLocationDAO
 from app.data_access.db import engine, get_session
+from app.data_access.dao import CategoryDAO, ProductDAO, StorageLocationDAO
+from app.services.location_services import LocationServices
+from app.services.product_services import ProductServices
 
 from .layout import render_shell
 
@@ -9,10 +11,12 @@ from .layout import render_shell
 def _build_rows() -> list[dict]:
 	location_dao = StorageLocationDAO(engine)
 	product_dao = ProductDAO(engine)
+	location_service = LocationServices(location_dao)
+	product_service = ProductServices(product_dao, CategoryDAO(engine), location_dao)
 
 	with get_session() as session:
-		locations = location_dao.get_all(session)
-		products = product_dao.get_all(session)
+		locations = location_service.get_all_storage_locations(session)
+		products = product_service.get_all_products(session)
 
 	product_count: dict[int, int] = {}
 	for product in products:

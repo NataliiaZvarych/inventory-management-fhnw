@@ -1,20 +1,19 @@
 from nicegui import ui
 
-from app.data_access.dao import CategoryDAO, ProductDAO, StorageLocationDAO
 from app.data_access.db import engine, get_session
+from app.data_access.dao import CategoryDAO, ProductDAO, StorageLocationDAO
+from app.services.category_services import CategoryServices
+from app.services.location_services import LocationServices
 from app.services.product_services import ProductServices
 
 
 def _select_options() -> tuple[dict[int, str], dict[int, str]]:
-	category_dao = CategoryDAO(engine)
-	location_dao = StorageLocationDAO(engine)
+	category_service = CategoryServices(CategoryDAO(engine), ProductDAO(engine))
+	location_service = LocationServices(StorageLocationDAO(engine))
 
 	with get_session() as session:
-		categories = {c.category_id: c.name for c in category_dao.get_all(session)}
-		locations = {
-			l.storage_location_id: l.name
-			for l in location_dao.get_all(session)
-		}
+		categories = {c.category_id: c.name for c in category_service.get_all_categories(session)}
+		locations = {l.storage_location_id: l.name for l in location_service.get_all_storage_locations(session)}
 	return categories, locations
 
 

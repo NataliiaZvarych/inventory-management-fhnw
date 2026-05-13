@@ -1,5 +1,9 @@
 from nicegui import ui
 
+from app.data_access.dao import UserDAO
+from app.data_access.db import engine, get_session
+from app.services.user_service import UserService
+
 
 @ui.page("/")
 def login_page() -> None:
@@ -24,7 +28,18 @@ def login_page() -> None:
 				).props("outlined")
 
 				def login() -> None:
-					ui.notify(f"Welcome, {username.value or 'user'}", type="positive")
-					ui.navigate.to("/dashboard")
+					user_service = UserService(UserDAO(engine))
+					try:
+						with get_session() as session:
+							login_name = str(username.value or "").strip()
+							if password.value:
+								user = user_service.login(session, login_name, str(password.value or ""))
+							else:
+								user = user_service.get_user_by_name(session, login_name)
+
+						ui.notify(f"Welcome, {user.name if user else username.value or 'user'}", type="positive")
+						ui.navigate.to("/dashboard")
+					except ValueError as exc:
+						ui.notify(str(exc), type="negative")
 
 				ui.button("LOGIN", on_click=login).props("color=primary").classes("w-full")

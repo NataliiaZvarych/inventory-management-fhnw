@@ -1,20 +1,25 @@
 from nicegui import ui
 
-from app.data_access.dao import ProductDAO, StockMovementDAO, UserDAO
 from app.data_access.db import engine, get_session
+from app.data_access.dao import CategoryDAO, ProductDAO, StockMovementDAO, StorageLocationDAO, UserDAO
+from app.services.movement_services import MovementService
+from app.services.product_services import ProductServices
+from app.services.user_service import UserService
 
 from .layout import render_shell
 
 
 def _build_rows() -> list[dict]:
-	movement_dao = StockMovementDAO(engine)
 	product_dao = ProductDAO(engine)
 	user_dao = UserDAO(engine)
+	movement_service = MovementService(product_dao, user_dao, StockMovementDAO(engine), StorageLocationDAO(engine))
+	product_service = ProductServices(product_dao, CategoryDAO(engine), StorageLocationDAO(engine))
+	user_service = UserService(user_dao)
 
 	with get_session() as session:
-		movements = movement_dao.get_all(session)
-		products = {product.product_id: product.name for product in product_dao.get_all(session)}
-		users = {user.user_id: user.name for user in user_dao.get_all(session)}
+		movements = movement_service.get_all_movements(session)
+		products = {product.product_id: product.name for product in product_service.get_all_products(session)}
+		users = {user.user_id: user.name for user in user_service.get_all_users(session)}
 
 	rows: list[dict] = []
 	for movement in sorted(movements, key=lambda item: item.timestamp, reverse=True):
