@@ -5,17 +5,16 @@ from nicegui import ui
 from app.data_access.db import engine, get_session
 from app.data_access.dao import ProductDAO, StockMovementDAO, StorageLocationDAO, UserDAO
 from app.services.movement_services import MovementService
-from app.services.user_service import UserService
 
 from .layout import render_shell
 
 
 def _build_rows() -> list[dict]:
-	user_service = UserService(UserDAO(engine))
+	user_dao = UserDAO(engine)
 	movement_service = MovementService(ProductDAO(engine), UserDAO(engine), StockMovementDAO(engine), StorageLocationDAO(engine))
 
 	with get_session() as session:
-		users = user_service.get_all_users(session)
+		users = user_dao.get_all(session)
 		movements = movement_service.get_all_movements(session)
 
 	movement_count = Counter(movement.user_id for movement in movements)

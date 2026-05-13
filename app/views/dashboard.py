@@ -6,7 +6,6 @@ from app.services.category_services import CategoryServices
 from app.services.location_services import LocationServices
 from app.services.movement_services import MovementService
 from app.services.product_services import ProductServices
-from app.services.user_service import UserService
 
 from .layout import render_shell
 
@@ -15,14 +14,14 @@ def _load_dashboard_data() -> dict:
 	product_service = ProductServices(ProductDAO(engine), CategoryDAO(engine), StorageLocationDAO(engine))
 	category_service = CategoryServices(CategoryDAO(engine), ProductDAO(engine))
 	location_service = LocationServices(StorageLocationDAO(engine))
-	user_service = UserService(UserDAO(engine))
+	user_dao = UserDAO(engine)
 	movement_service = MovementService(ProductDAO(engine), UserDAO(engine), StockMovementDAO(engine), StorageLocationDAO(engine))
 
 	with get_session() as session:
 		products = product_service.get_all_products(session)
 		categories = category_service.get_all_categories(session)
 		locations = location_service.get_all_storage_locations(session)
-		users = user_service.get_all_users(session)
+		users = user_dao.get_all(session)
 		movements = movement_service.get_all_movements(session)
 		product_names = {product.product_id: product.name for product in products}
 		user_names = {user.user_id: user.name for user in users}
