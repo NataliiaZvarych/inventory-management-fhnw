@@ -85,21 +85,21 @@ def dashboard_page() -> None:
 									ui.label(f"Minimum: {product.minimum_stock}").classes("text-xs text-gray-500")
 								ui.label(str(product.quantity)).classes("text-2xl font-bold text-amber-600")
 
-				with ui.card().classes("flex-1 min-w-[320px] rounded-3xl p-6 shadow-sm"):
-					ui.label("Recent movements").classes("text-xl font-semibold text-gray-900")
-					ui.label("Latest inventory activity.").classes("text-sm text-gray-500")
-					ui.separator().classes("my-4")
+			with ui.card().classes("flex-1 min-w-[320px] rounded-3xl p-6 shadow-sm"):
+				ui.label("Recent movements").classes("text-xl font-semibold text-gray-900")
+				ui.label("Latest inventory activity.").classes("text-sm text-gray-500")
+				ui.separator().classes("my-4")
 
-					if not data["recent_movements"]:
-						ui.label("No movements yet.").classes("text-base text-gray-500")
-					else:
-						for movement in data["recent_movements"]:
-							with ui.card().classes("mb-3 w-full rounded-2xl bg-white p-4 shadow-none ring-1 ring-gray-100"):
-								with ui.row().classes("items-center justify-between"):
-									with ui.column().classes("gap-0"):
-										ui.label(movement["product"]).classes("text-base font-semibold text-gray-900")
-										ui.label(f"{movement['user']} • {movement['timestamp']}").classes("text-xs text-gray-500")
-									ui.label(f"{movement['movement_type']} · {movement['quantity']}").classes("text-sm font-semibold text-[#2f6fb1]")
+				if not data["recent_movements"]:
+					ui.label("No movements yet.").classes("text-base text-gray-500")
+				else:
+					for movement in data["recent_movements"]:
+						with ui.card().classes("mb-3 w-full rounded-2xl bg-white p-4 shadow-none ring-1 ring-gray-100"):
+							with ui.row().classes("items-center justify-between"):
+								with ui.column().classes("gap-0"):
+									ui.label(movement["product"]).classes("text-base font-semibold text-gray-900")
+									ui.label(f"{movement['user']} • {movement['timestamp']}").classes("text-xs text-gray-500")
+								ui.label(f"{movement['movement_type']} · {movement['quantity']}").classes("text-sm font-semibold text-[#2f6fb1]")
 
 		with ui.row().classes("w-full gap-4 flex-wrap"):
 			with ui.card().classes("flex-1 rounded-3xl p-5 shadow-sm"):

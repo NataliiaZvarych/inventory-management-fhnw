@@ -21,8 +21,10 @@ def _select_options() -> tuple[dict[int, str], dict[int, str]]:
 def render_add_product_form(on_created=None) -> None:
 	categories, locations = _select_options()
 
-	with ui.card().classes("w-full"):
-		ui.label("Add Product").classes("text-h6")
+	with ui.card().classes("w-full rounded-3xl p-6 shadow-sm"):
+		ui.label("Add Product").classes("text-xl font-semibold text-gray-900")
+		ui.label("Create a new product record.").classes("text-sm text-gray-500")
+		ui.separator().classes("my-4")
 
 		name = ui.input("Name").props("outlined")
 		description = ui.input("Description").props("outlined")
@@ -33,7 +35,10 @@ def render_add_product_form(on_created=None) -> None:
 		location_id = ui.select(locations, label="Storage location").props("outlined")
 
 		def create_product() -> None:
-			if not name.value:
+			product_name = str(name.value or "").strip()
+			description_value = str(description.value or "").strip()
+
+			if not product_name:
 				ui.notify("Product name is required", type="negative")
 				return
 
@@ -48,8 +53,8 @@ def render_add_product_form(on_created=None) -> None:
 				return
 
 			product_data = {
-				"name": str(name.value).strip(),
-				"description": str(description.value).strip() or None,
+				"name": product_name,
+				"description": description_value or None,
 				"quantity": int(quantity.value or 0),
 				"minimum_stock": int(minimum_stock.value or 0),
 				"status": status.value or "active",
@@ -81,4 +86,4 @@ def render_add_product_form(on_created=None) -> None:
 			except ValueError as exc:
 				ui.notify(str(exc), type="negative")
 
-		ui.button("Create Product", on_click=create_product).props("color=primary")
+		ui.button("Create Product", on_click=create_product).props("color=primary no-caps")

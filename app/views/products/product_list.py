@@ -19,7 +19,7 @@ def _build_rows() -> list[dict]:
 			for l in location_dao.get_all(session)
 		}
 
-	rows = []
+	rows: list[dict[str, object]] = []
 	for p in products:
 		rows.append(
 			{
@@ -42,13 +42,13 @@ def render_product_list(container) -> None:
 	rows = _build_rows()
 
 	with container:
-		ui.label("Product List").classes("text-h6")
+		ui.label("Product List").classes("text-xl font-semibold text-gray-900")
+		ui.label("Overview of all stored products.").classes("text-sm text-gray-500")
+		ui.separator().classes("my-4")
 
 		if not rows:
-			ui.label("No products found.").classes("text-subtitle1")
-			return	
-		
-		
+			ui.label("No products found.").classes("text-base text-gray-500")
+			return
 
 		columns = [
 			{"name": "product_id", "label": "ID", "field": "product_id", "align": "left"},
