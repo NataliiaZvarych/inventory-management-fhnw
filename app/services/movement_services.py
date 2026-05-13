@@ -26,9 +26,6 @@ class MovementService:
         user = self.user_dao.get(session, movement_data['user_id'])
         if not user:
             raise ValueError("User not found")
-        location = self.location_dao.get(session, movement_data['location_id'])
-        if not location:
-            raise ValueError("Location not found")
         movement = StockMovement(**movement_data)
         return self.movement_dao.create(session, movement)
     
@@ -78,13 +75,28 @@ class MovementService:
             raise ValueError("Product is not located at the source location")
         if product.quantity < quantity:
             raise ValueError("Not enough stock at the source location")
+        
+        from_location = self.location_dao.get(session, from_location_id)
+        if not from_location:
+            raise ValueError("Source location not found")
+
+        to_location = self.location_dao.get(session, to_location_id)
+        if not to_location:
+            raise ValueError("Target location not found")
+        product.storage_location_id = to_location_id
+        session.add(product)
         # Prepare movement data
         movement_data = {
             "product_id": product_id,
             "user_id": user_id,
-            "location_id": to_location_id,  # destination becomes the new location
             "quantity": quantity,
-            "movement_type": "move"
+            "movement_type": "move",
+            "note": (
+                f"Moved from location "
+                f"{from_location_id} "
+                f"to location "
+                f"{to_location_id}"
+            )
         }
         return self.create_movement(session, movement_data)
     
@@ -105,14 +117,6 @@ class MovementService:
             user = self.user_dao.get(session, update_data['user_id'])
             if not user:
                 raise ValueError("User not found")
-        if 'from_location_id' in update_data:
-            from_location = self.location_dao.get(session, update_data['from_location_id'])
-            if not from_location:
-                raise ValueError("Source location not found")
-        if 'to_location_id' in update_data:
-            to_location = self.location_dao.get(session, update_data['to_location_id'])
-            if not to_location:
-                raise ValueError("Target location not found")
         # Update the movement in the database
         updated = self.movement_dao.update(session, movement_id, update_data)
         if not updated:
@@ -136,13 +140,6 @@ class MovementService:
         all_movements = self.movement_dao.get_all(session)
         return [m for m in all_movements if m.user_id == user_id]
 
-    def get_movements_by_location(self, session: Session, location_id: int) -> List[StockMovement]:
-        """
-        Get all movements related to a specific storage location.
-        """
-        all_movements = self.movement_dao.get_all(session)
-        # Предполагается, что location_id может быть как source, так и target (если есть from/to), иначе просто location_id
-        return [m for m in all_movements if getattr(m, 'location_id', None) == location_id or getattr(m, 'from_location_id', None) == location_id or getattr(m, 'to_location_id', None) == location_id]
 
     def get_movements_by_date(self, session: Session, date) -> List[StockMovement]:
         """
