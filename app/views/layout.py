@@ -55,19 +55,19 @@ def render_shell(
 							"flat no-caps outline"
 						)
 
-			with ui.column().classes("flex-1 gap-6 p-6"):
-				with ui.row().classes("items-start justify-between gap-4"):
-					with ui.column().classes("gap-1"):
-						ui.label(title).classes("text-4xl font-bold text-gray-900")
-						ui.label(subtitle).classes("text-base text-gray-500")
+		with ui.column().classes("flex-1 gap-6 p-6"):
+			with ui.row().classes("items-start justify-between gap-4"):
+				with ui.column().classes("gap-1"):
+					ui.label(title).classes("text-4xl font-bold text-gray-900")
+					ui.label(subtitle).classes("text-base text-gray-500")
 
-					with ui.card().classes("rounded-2xl bg-white px-4 py-3 shadow-sm"):
-						with ui.row().classes("items-center gap-3"):
-							ui.label("N").classes(
+				with ui.card().classes("rounded-2xl bg-white px-4 py-3 shadow-sm"):
+					with ui.row().classes("items-center gap-3"):
+						ui.label("N").classes(
 								"flex h-10 w-10 items-center justify-center rounded-full bg-[#e8f1ff] text-sm font-bold text-[#2f6fb1]"
 							)
-							with ui.column().classes("gap-0"):
+						with ui.column().classes("gap-0"):
 								ui.label("Natalia").classes("text-sm font-semibold text-gray-900")
 								ui.label("admin").classes("text-xs text-gray-500")
 
-				content_builder()
+			content_builder()
