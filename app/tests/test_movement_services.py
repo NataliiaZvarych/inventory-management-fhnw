@@ -55,19 +55,17 @@ def test_create_movement_with_invalid_user_raises_error(session, services, base_
         )
 
 
-def test_create_movement_with_invalid_location_raises_error(session, services, base_data):
+def test_move_product_with_invalid_target_location_raises_error(session, services, base_data):
     movement_service = services["movement"]
 
-    with pytest.raises(ValueError, match="Location not found"):
-        movement_service.create_movement(
+    with pytest.raises(ValueError, match="Target location not found"):
+        movement_service.move_product(
             session,
-            {
-                "product_id": base_data["product"].product_id,
-                "user_id": base_data["user"].user_id,
-                "location_id": 999,
-                "quantity": 3,
-                "movement_type": "move",
-            },
+            product_id=base_data["product"].product_id,
+            user_id=base_data["user"].user_id,
+            from_location_id=base_data["location"].storage_location_id,
+            to_location_id=999,
+            quantity=1,
         )
 
 

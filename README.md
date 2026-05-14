@@ -356,35 +356,65 @@ All relevant data is managed via an ORM (SQLModel). This ensures a clean separat
 
 ## 🧪 Testing
 
-The project includes unit tests, database tests, and integration tests.
+The project includes automated unit and service-level tests implemented with pytest.
 
-**Test mix:**
-- Overall 12 tests
-- Unit tests: validation rules, calculations, and business logic
-- Database tests: persistence and ORM behavior
-- Integration tests: complete workflows
+**Test Scope:**
+Overall 28 automated tests were implemented and executed successfully.
+The tests cover:
+- CategoryServices
+- LocationServices
+- ProductServices
+- UserService
+- MovementService
 
-**Example of tested functionality:**
+**Tested Functionality:**
+The following functionalities were tested:
+- Category creation, update, and deletion
+- Storage location management
 - Product creation and validation
-- Category assignment
-- Stock movement handling
-- Prevention of negative stock
-- Loan and return workflows
-- Low stock detection
-- Role validation
-- Data persistence
-- CSV export
+- Product availability checks
+- User authentication and role validation
+- Stock movement creation
+- Validation of invalid product, user, and location references
+- Prevention of invalid stock movements
+- Database persistence and service logic validation
 
-**Template for writing test cases**
+**Test Enviroment:**
+
+The test use:
+- pytest
+- SQLite in-memory database
+- SQLModel ORM
+- pytest fixtures for isolated test data
+
+**Test Execution:**
+
+Command used to execute all tests:
+python -m pytest app/tests -v
+
+**Test Result:**
+- 28 tests passed
+- 0 failed
+- 0 errors
+
+**Test Case Documentation:**
+The project documentation includes:
+- detailed test cases
+- automated testing reports
+- pytest execution screenshots
+The documentation files are available in:
+app/docs
+
+**Template for writing test cases:**
 1. Test case ID – unique identifier (e.g., TC_001)
 2. Test case title/description – What is the test about?
-3. Preconditions: Requirements before executing the test
-4. Test steps: Actions to perform
+3. Preconditions – Requirements before executing the test
+4. Test steps – Actions to perform
 5. Test data/input
 6. Expected result
 7. Actual result
 8. Status – pass or fail
-9. Comments – Additional notes or defect found
+9. Comments – Additional notes or detected issues
 
 ---
 
