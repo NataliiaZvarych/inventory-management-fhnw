@@ -51,6 +51,12 @@ class UserService:
 			raise ValueError("Incorrect password")
 		return user
 
+	def get_all_users(self, session: Session) -> list[User]:
+		"""
+		Get all users from the database.
+		"""
+		return self.user_dao.get_all(session)
+
 	def change_role(self, session: Session, user_id: int, new_role: str) -> User:
 		"""
 		Change the role of a user.

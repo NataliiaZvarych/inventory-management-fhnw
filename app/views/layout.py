@@ -14,9 +14,9 @@ NAV_ITEMS = [
 
 
 def render_shell(
-	active_route: str,
 	title: str,
 	subtitle: str,
+	active_route: str,
 	content_builder: Callable[[], None],
 ) -> None:
 	with ui.row().classes("w-full min-h-screen gap-0 bg-[#f5f7fb]"):
