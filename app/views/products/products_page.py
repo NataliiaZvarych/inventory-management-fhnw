@@ -41,8 +41,11 @@ def products_page() -> None:
         rows = _build_rows()
 
         with ui.card().classes("rounded-3xl p-6 shadow-sm"):
-            ui.label("Products").classes("text-xl font-semibold text-gray-900")
-            ui.label("Browse and manage inventory items.").classes("text-sm text-gray-500")
+            with ui.row().classes("w-fullitems-center justify-between"):
+                ui.label("Products").classes("text-xl font-semibold text-gray-900")
+                ui.label("Browse and manage your inventory items.").classes("text-gray-500"
+                )
+                
             ui.separator().classes("my-4")
 
             if not rows:

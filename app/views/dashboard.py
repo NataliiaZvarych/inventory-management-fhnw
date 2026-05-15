@@ -105,15 +105,7 @@ def dashboard_page() -> None:
 									ui.label(f"{movement['user']} • {movement['timestamp']}").classes("text-xs text-gray-500")
 								ui.label(f"{movement['movement_type']} · {movement['quantity']}").classes("text-sm font-semibold text-[#2f6fb1]")
 
-		with ui.row().classes("w-full gap-4 flex-wrap"):
-			with ui.card().classes("flex-1 rounded-3xl p-5 shadow-sm"):
-				ui.label("Quick actions").classes("text-lg font-semibold text-gray-900")
-				ui.label("Jump to the most used sections.").classes("text-sm text-gray-500")
-				ui.separator().classes("my-4")
-				with ui.row().classes("gap-3 flex-wrap"):
-					ui.button("Products", on_click=lambda: ui.navigate.to("/products")).props("color=primary no-caps")
-					ui.button("Categories", on_click=lambda: ui.navigate.to("/categories")).props("outline no-caps")
-					ui.button("Movements", on_click=lambda: ui.navigate.to("/movements")).props("outline no-caps")
+		
 
 			with ui.card().classes("flex-1 rounded-3xl p-5 shadow-sm"):
 				ui.label("Overview").classes("text-lg font-semibold text-gray-900")

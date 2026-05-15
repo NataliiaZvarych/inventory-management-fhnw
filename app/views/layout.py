@@ -46,22 +46,15 @@ def render_shell(
 
 					ui.separator()
 
-					with ui.column().classes("gap-3 rounded-2xl bg-[#f8fafc] p-4"):
-						ui.label("Quick access").classes("text-sm font-semibold text-gray-700")
-						ui.button("Go to Products", on_click=lambda: ui.navigate.to("/products")).props(
-							"flat no-caps color=primary"
-						)
-						ui.button("Open Dashboard", on_click=lambda: ui.navigate.to("/dashboard")).props(
-							"flat no-caps outline"
-						)
+					
 
-		with ui.column().classes("flex-1 gap-6 p-6"):
-			with ui.row().classes("items-start justify-between gap-4"):
+		with ui.column().classes("relative flex-1 gap-6 p-6"):
+			with ui.row().classes("w-fullitems-start"):
 				with ui.column().classes("gap-1"):
 					ui.label(title).classes("text-4xl font-bold text-gray-900")
 					ui.label(subtitle).classes("text-base text-gray-500")
 
-				with ui.card().classes("rounded-2xl bg-white px-4 py-3 shadow-sm"):
+				with ui.card().classes("absolute right-6 top-6rounded-2xl bg-white px-4 py-3 shadow-sm"):
 					with ui.row().classes("items-center gap-3"):
 						ui.label("N").classes(
 								"flex h-10 w-10 items-center justify-center rounded-full bg-[#e8f1ff] text-sm font-bold text-[#2f6fb1]"
