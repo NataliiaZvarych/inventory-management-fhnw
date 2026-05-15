@@ -4,7 +4,7 @@ from app.data_access.dao import UserDAO
 from app.data_access.db import engine, get_session
 
 
-@ui.page("/")
+@ui.page("/login")
 def login_page() -> None:
 	with ui.column().classes(
 		"w-full min-h-screen items-center justify-center bg-[#f5f7fb] px-6"

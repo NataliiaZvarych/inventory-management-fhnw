@@ -42,7 +42,7 @@ def movements_page() -> None:
 	def content() -> None:
 		rows = _build_rows()
 
-		with ui.card().classes("rounded-3xl p-6 shadow-sm"):
+		with ui.card().classes("w-full rounded-3xl p-6 shadow-sm"):
 			ui.label("Movements").classes("text-xl font-semibold text-gray-900")
 			ui.label("Review stock changes and activity history.").classes("text-sm text-gray-500")
 			ui.separator().classes("my-4")

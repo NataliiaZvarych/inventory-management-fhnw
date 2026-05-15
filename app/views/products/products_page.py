@@ -40,7 +40,7 @@ def products_page() -> None:
     def content() -> None:
         rows = _build_rows()
 
-        with ui.card().classes("rounded-3xl p-6 shadow-sm"):
+        with ui.card().classes("w-full ounded-3xl p-6 shadow-sm"):
             with ui.column().classes("w-fullitems-center justify-between"):
                 ui.label("Products").classes("text-xl font-semibold text-gray-900")
                 ui.label("Browse and manage your inventory items.").classes("text-gray-500"

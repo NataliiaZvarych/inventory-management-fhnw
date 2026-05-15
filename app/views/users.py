@@ -5,16 +5,18 @@ from nicegui import ui
 from app.data_access.db import engine, get_session
 from app.data_access.dao import ProductDAO, StockMovementDAO, StorageLocationDAO, UserDAO
 from app.services.movement_services import MovementService
+from app.services.user_service import UserService
 
 from .layout import render_shell
 
 
 def _build_rows() -> list[dict]:
 	user_dao = UserDAO(engine)
+	user_service = UserService(user_dao)
 	movement_service = MovementService(ProductDAO(engine), UserDAO(engine), StockMovementDAO(engine), StorageLocationDAO(engine))
 
 	with get_session() as session:
-		users = user_dao.get_all(session)
+		users = user_service.get_all_users(session)
 		movements = movement_service.get_all_movements(session)
 
 	movement_count = Counter(movement.user_id for movement in movements)
@@ -37,7 +39,7 @@ def users_page() -> None:
 	def content() -> None:
 		rows = _build_rows()
 
-		with ui.card().classes("rounded-3xl p-6 shadow-sm"):
+		with ui.card().classes("w-full rounded-3xl p-6 shadow-sm"):
 			ui.label("Users").classes("text-xl font-semibold text-gray-900")
 			ui.label("Monitor demo users and their activity.").classes("text-sm text-gray-500")
 			ui.separator().classes("my-4")
