@@ -1,30 +1,66 @@
 from nicegui import ui
 
-from app.views.products.add_product import render_add_product_form
-from app.views.products.product_list import render_product_list
+from app.data_access.db import engine, get_session
+from app.data_access.dao import ProductDAO, CategoryDAO, StorageLocationDAO
+from app.services.product_services import ProductServices
 
 from ..layout import render_shell
 
 
+def _build_rows() -> list[dict]:
+    product_dao = ProductDAO(engine)
+    category_dao = CategoryDAO(engine)
+    location_dao = StorageLocationDAO(engine)
+    product_service = ProductServices(product_dao, category_dao, location_dao)
+
+    with get_session() as session:
+        products = product_service.get_all_products(session)
+
+        rows: list[dict] = []
+        for product in products:
+            category = category_dao.get(session, product.category_id)
+            location = location_dao.get(session, product.storage_location_id)
+            rows.append(
+                {
+                    "product_id": product.product_id,
+                    "name": product.name,
+                    "category": category.name if category else "-",
+                    "storage_location": location.name if location else "-",
+                    "quantity": product.quantity,
+                    "minimum_stock": product.minimum_stock,
+                    "status": product.status,
+                }
+            )
+
+    return rows
+
+
 @ui.page("/products")
 def products_page() -> None:
-	def content() -> None:
-		with ui.row().classes("w-full gap-6 items-start flex-wrap"):
-			with ui.column().classes("flex-1 min-w-[420px] gap-4"):
-				with ui.card().classes("rounded-3xl p-6 shadow-sm"):
-					ui.label("Products").classes("text-xl font-semibold text-gray-900")
-					ui.label("Browse, create, and review product records.").classes("text-sm text-gray-500")
-					ui.separator().classes("my-4")
+    def content() -> None:
+        rows = _build_rows()
 
-					list_panel = ui.column().classes("w-full")
+        with ui.card().classes("rounded-3xl p-6 shadow-sm"):
+            ui.label("Products").classes("text-xl font-semibold text-gray-900")
+            ui.label("Browse and manage inventory items.").classes("text-sm text-gray-500")
+            ui.separator().classes("my-4")
 
-					def refresh_list() -> None:
-						list_panel.clear()
-						render_product_list(list_panel)
+            if not rows:
+                ui.label("No products found.").classes("text-base text-gray-500")
+                return
 
-					refresh_list()
+            ui.table(
+                columns=[
+                    {"name": "product_id", "label": "ID", "field": "product_id"},
+                    {"name": "name", "label": "Name", "field": "name"},
+                    {"name": "category", "label": "Category", "field": "category"},
+                    {"name": "storage_location", "label": "Location", "field": "storage_location"},
+                    {"name": "quantity", "label": "Quantity", "field": "quantity"},
+                    {"name": "minimum_stock", "label": "Min stock", "field": "minimum_stock"},
+                    {"name": "status", "label": "Status", "field": "status"},
+                ],
+                rows=rows,
+                row_key="product_id",
+            ).classes("w-full")
 
-			with ui.column().classes("flex-1 min-w-[360px]"):
-				render_add_product_form(on_created=refresh_list)
-
-	render_shell("Products", "Manage your product catalog from one place.", "/products", content)
+    render_shell("Products", "Inventory items and their details.", "/products", content)

@@ -1,33 +1,13 @@
 from nicegui import ui
+from app.views.dashboard import dashboard_page
 
-def show_dashboard():
-    content.clear()
-    with content:
-        ui.label('Dashboard Page')
+@ui.page('/')
+def main_redirect():
+    ui.navigate.to('/dashboard')
 
-def show_products():
-    content.clear()
-    with content:
-        ui.label('Products Page')
-
-def show_add_product():
-    content.clear()
-    with content:
-        ui.label('Add Product Page')
-
-
-ui.label('Inventory Management App')
-
-with ui.row():
-    ui.button('Dashboard', on_click=show_dashboard)
-    ui.button('Products', on_click=show_products)
-    ui.button('Add Product', on_click=show_add_product)
-
-
-content = ui.column()
-
-
-show_dashboard()
-
-ui.run()
-
+if __name__ in {"__main__", "__mp_main__"}:
+    ui.run(
+        host="127.0.0.1",
+        port=8080,
+        reload=True
+    )
