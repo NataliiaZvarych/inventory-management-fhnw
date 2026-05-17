@@ -319,6 +319,78 @@ def products_page() -> None:
 </q-td>
 """,
             )
+            
+            cat_options_list = [{"label": c.name, "value": c.category_id} for c in categories]
+            cat_options_json = json.dumps(cat_options_list)
+
+            table.add_slot(
+    "body-cell-category",
+    f"""
+<q-td :props="props">
+  <div v-if="props.row._editing_field !== 'category'"
+       @click="props.row._editing_row ? props.row._editing_field = 'category' : null"
+       @dblclick="props.row._editing_field = 'category'">
+    {{{{ props.value }}}}
+  </div>
+
+  <q-select v-else
+            dense
+            emit-value
+            map-options
+            v-model="props.row.category_id"
+            :options='{cat_options_json}'
+            @update:model-value="$parent.$emit('save', {{row: props.row, field: 'category'}})" />
+</q-td>
+""",
+            )
+            loc_options_list = [{"label": l.name, "value": l.storage_location_id} for l in locations]
+            loc_options_json = json.dumps(loc_options_list)
+
+            table.add_slot(
+    "body-cell-storage_location",
+    f"""
+<q-td :props="props">
+    <div v-if="props.row._editing_field !== 'storage_location'"
+            @click="props.row._editing_row ? props.row._editing_field = 'storage_location' : null"
+            @dblclick="props.row._editing_field = 'storage_location'">
+        {{{{ props.value }}}}
+    </div>
+    <q-select v-else
+            dense
+            emit-value
+            map-options
+            v-model="props.row.storage_location_id"
+            :options='{loc_options_json}'
+            @update:model-value="$parent.$emit('save', {{row: props.row, field: 'storage_location'}})" />
+</q-td>
+""",
+            )
+            loc_options_list = [{"label": l.name, "value": l.storage_location_id} for l in locations]
+            loc_options_json = json.dumps(loc_options_list)
+
+            table.add_slot(
+    "body-cell-storage_location",
+    f"""
+<q-td :props="props">
+    <div v-if="props.row._editing_field !== 'storage_location'"
+            @click="props.row._editing_row ? props.row._editing_field = 'storage_location' : null"
+            
+            @dblclick="props.row._editing_field = 'storage_location'">
+        {{{{ props.value }}}}
+    </div>
+    <q-select v-else
+            dense
+            emit-value
+            map-options
+            v-model="props.row.storage_location_id"
+            :options='{loc_options_json}'
+            @update:model-value="$parent.$emit('save', {{row: props.row, field: 'storage_location'}})" />
+</q-td>
+""",
+            )
+            
+            cat_options_list = [{"label": c.name, "value": c.category_id} for c in categories]
+            cat_options_json = json.dumps(cat_options_list)
 
             table.add_slot(
                 "body-cell-actions",
