@@ -1,9 +1,7 @@
 from nicegui import ui
-from app.views.dashboard import dashboard_page
 
-@ui.page('/')
-def main_redirect():
-    ui.navigate.to('/dashboard')
+import app.views.login
+import app.views.dashboard
 
 if __name__ in {"__main__", "__mp_main__"}:
     ui.run(

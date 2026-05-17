@@ -1,7 +1,6 @@
 from collections.abc import Callable
-
 from nicegui import ui
-
+from app.views.auth_state import current_user as auth_current_user
 
 NAV_ITEMS = [
 	{"label": "Dashboard", "route": "/dashboard", "icon": "dashboard"},
@@ -18,10 +17,14 @@ def render_shell(
 	subtitle: str,
 	active_route: str,
 	content_builder: Callable[[], None],
+	current_user: dict = None,
 ) -> None:
-	with ui.row().classes("w-full min-h-screen gap-0 bg-[#f5f7fb]"):
+	if current_user is None:
+		current_user = auth_current_user
+
+	with ui.row().classes("w-full min-h-screen gap-0 bg-[#f5f7fb] flex-nowrap"):
 		with ui.card().classes(
-			"w-72 min-h-screen rounded-none border-r border-gray-200 bg-white shadow-none"
+			"w-72 min-w-72 min-h-screen shrink-0 rounded-none border-r border-gray-200 bg-white shadow-none"
 		):
 			with ui.column().classes("h-full justify-between p-6 gap-6"):
 				with ui.column().classes("gap-6"):
@@ -44,30 +47,42 @@ def render_shell(
 							else:
 								button.classes("text-gray-700")
 
-					ui.separator()
 
-					with ui.column().classes("gap-3 rounded-2xl bg-[#f8fafc] p-4"):
-						ui.label("Quick access").classes("text-sm font-semibold text-gray-700")
-						ui.button("Go to Products", on_click=lambda: ui.navigate.to("/products")).props(
-							"flat no-caps color=primary"
-						)
-						ui.button("Open Dashboard", on_click=lambda: ui.navigate.to("/dashboard")).props(
-							"flat no-caps outline"
-						)
 
-		with ui.column().classes("flex-1 gap-6 p-6"):
-			with ui.row().classes("items-start justify-between gap-4"):
+		with ui.column().classes("flex-1 min-w-0 gap-4 p-4"):
+			with ui.row().classes("w-full items-start justify-between gap-4"):
 				with ui.column().classes("gap-1"):
 					ui.label(title).classes("text-4xl font-bold text-gray-900")
 					ui.label(subtitle).classes("text-base text-gray-500")
 
-				with ui.card().classes("rounded-2xl bg-white px-4 py-3 shadow-sm"):
+				with ui.card().classes("ml-auto rounded-2xl bg-white px-4 py-3 shadow-sm"):
 					with ui.row().classes("items-center gap-3"):
-						ui.label("N").classes(
-								"flex h-10 w-10 items-center justify-center rounded-full bg-[#e8f1ff] text-sm font-bold text-[#2f6fb1]"
-							)
+
+						user_name = (
+							current_user["name"]
+							if current_user and current_user.get("name")
+							else "Unknown"
+						)
+
+						user_role = (
+							current_user["role"]
+							if current_user and current_user.get("role")
+							else "-"
+						)
+
+						ui.label(user_name[0].upper()).classes(
+							"flex h-10 w-10 items-center justify-center "
+							"rounded-full bg-[#e8f1ff] text-sm "
+							"font-bold text-[#2f6fb1]"
+						)
+
 						with ui.column().classes("gap-0"):
-								ui.label("Natalia").classes("text-sm font-semibold text-gray-900")
-								ui.label("admin").classes("text-xs text-gray-500")
+							ui.label(user_name).classes(
+								"font-semibold text-gray-900"
+							)
+
+							ui.label(user_role).classes(
+								"text-sm text-gray-500"
+							)
 
 			content_builder()
