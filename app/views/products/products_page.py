@@ -1,10 +1,8 @@
 from nicegui import ui
-
 from app.data_access.db import engine, get_session
 from app.data_access.dao import ProductDAO, CategoryDAO, StorageLocationDAO
 from app.services.product_services import ProductServices
-
-from ..layout import render_shell
+from app.views.layout import render_shell
 
 
 def _build_rows() -> list[dict]:
