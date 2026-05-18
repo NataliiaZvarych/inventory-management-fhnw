@@ -59,6 +59,7 @@ def login_page():
 
                     except ValueError as e:
                         message.set_text(str(e))
-
+            user_input.on("keydown.enter", lambda: login())
+            password_input.on("keydownenter", lambda: login())
             ui.button("Login", on_click=login).classes("w-full mt-4")
 
