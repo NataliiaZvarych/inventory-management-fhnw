@@ -19,12 +19,15 @@ def login_page() -> None:
 
 				ui.separator()
 
-				username = ui.input("Username or User ID", value="Natalia").props("outlined")
+				username = ui.input(
+					"Username or User ID",
+					 value="Natalia",
+				).props("outlined") .on("keydown.enter", lambda _: login())
 				password = ui.input(
 					"Password optional",
 					password=True,
 					password_toggle_button=True,
-				).props("outlined")
+				).props("outlined").on("keydown.enter", lambda _: login())
 
 				def login() -> None:
 					user_dao = UserDAO(engine)
