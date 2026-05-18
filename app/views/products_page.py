@@ -7,7 +7,7 @@ from app.services.product_services import ProductServices
 from app.services.category_services import CategoryServices
 from app.services.location_services import LocationServices
 
-from ..layout import render_shell
+from .layout import render_shell
 
 
 def _build_rows() -> list[dict]:
