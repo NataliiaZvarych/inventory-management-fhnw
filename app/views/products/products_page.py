@@ -245,13 +245,16 @@ def products_page() -> None:
                 ],
                 rows=rows,
                 row_key="product_id",
+            ) .props(
+                'row-class="(row) => row._editing_row ? \'bg-yellow-2\' : \'\'"'
+            
             ).classes("w-full")
 
             # add inline editable slots for key fields
             table.add_slot(
                 "body-cell-name",
                 """
-<q-td :props="props">
+<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
   <div v-if="!props.row._editing_field || props.row._editing_field!='name'"
        @click="props.row._editing_row ? props.row._editing_field='name' : null"
        @dblclick="props.row._editing_field='name'">
@@ -269,7 +272,7 @@ def products_page() -> None:
             table.add_slot(
                 "body-cell-quantity",
                 """
-<q-td :props="props">
+<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
   <div v-if="!props.row._editing_field || props.row._editing_field!='quantity'"
        @click="props.row._editing_row ? props.row._editing_field='quantity' : null"
        @dblclick="props.row._editing_field='quantity'">
@@ -287,7 +290,7 @@ def products_page() -> None:
             table.add_slot(
                 "body-cell-minimum_stock",
                 """
-<q-td :props="props">
+<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
   <div v-if="!props.row._editing_field || props.row._editing_field!='minimum_stock'"
        @click="props.row._editing_row ? props.row._editing_field='minimum_stock' : null"
        @dblclick="props.row._editing_field='minimum_stock'">
@@ -305,7 +308,7 @@ def products_page() -> None:
             table.add_slot(
                 "body-cell-status",
                 """
-<q-td :props="props">
+<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
   <div v-if="!props.row._editing_field || props.row._editing_field!='status'"
        @click="props.row._editing_row ? props.row._editing_field='status' : null"
        @dblclick="props.row._editing_field='status'">
@@ -326,7 +329,7 @@ def products_page() -> None:
             table.add_slot(
     "body-cell-category",
     f"""
-<q-td :props="props">
+<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
   <div v-if="props.row._editing_field !== 'category'"
        @click="props.row._editing_row ? props.row._editing_field = 'category' : null"
        @dblclick="props.row._editing_field = 'category'">
@@ -349,7 +352,7 @@ def products_page() -> None:
             table.add_slot(
     "body-cell-storage_location",
     f"""
-<q-td :props="props">
+<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
     <div v-if="props.row._editing_field !== 'storage_location'"
             @click="props.row._editing_row ? props.row._editing_field = 'storage_location' : null"
             @dblclick="props.row._editing_field = 'storage_location'">
@@ -365,39 +368,16 @@ def products_page() -> None:
 </q-td>
 """,
             )
-            loc_options_list = [{"label": l.name, "value": l.storage_location_id} for l in locations]
-            loc_options_json = json.dumps(loc_options_list)
 
-            table.add_slot(
-    "body-cell-storage_location",
-    f"""
-<q-td :props="props">
-    <div v-if="props.row._editing_field !== 'storage_location'"
-            @click="props.row._editing_row ? props.row._editing_field = 'storage_location' : null"
+        
             
-            @dblclick="props.row._editing_field = 'storage_location'">
-        {{{{ props.value }}}}
-    </div>
-    <q-select v-else
-            dense
-            emit-value
-            map-options
-            v-model="props.row.storage_location_id"
-            :options='{loc_options_json}'
-            @update:model-value="$parent.$emit('save', {{row: props.row, field: 'storage_location'}})" />
-</q-td>
-""",
-            )
-            
-            cat_options_list = [{"label": c.name, "value": c.category_id} for c in categories]
-            cat_options_json = json.dumps(cat_options_list)
 
             table.add_slot(
                 "body-cell-actions",
                 """
 <q-td :props="props">
     <q-btn dense flat color="primary" icon="edit" label="Bearbeiten"
-           @click="props.row._editing_row=true" />
+           @click="props.row._editing_row = !props.row._editing_row" />
     <q-btn dense flat color="negative" icon="delete" label="Löschen"
            @click="$parent.$emit('delete', props.row)" />
 </q-td>
