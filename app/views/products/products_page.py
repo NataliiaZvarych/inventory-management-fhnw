@@ -254,7 +254,7 @@ def products_page() -> None:
             table.add_slot(
                 "body-cell-name",
                 """
-<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
+<q-td :props="props" :class="(props.row._editing_row || props.row._editing_field) ? 'bg-blue-1' : ''">
   <div v-if="!props.row._editing_field || props.row._editing_field!='name'"
        @click="props.row._editing_row ? props.row._editing_field='name' : null"
        @dblclick="props.row._editing_field='name'">
@@ -272,7 +272,7 @@ def products_page() -> None:
             table.add_slot(
                 "body-cell-quantity",
                 """
-<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
+<q-td :props="props" :class="(props.row._editing_row || props.row._editing_field) ? 'bg-blue-1' : ''">
   <div v-if="!props.row._editing_field || props.row._editing_field!='quantity'"
        @click="props.row._editing_row ? props.row._editing_field='quantity' : null"
        @dblclick="props.row._editing_field='quantity'">
@@ -290,7 +290,7 @@ def products_page() -> None:
             table.add_slot(
                 "body-cell-minimum_stock",
                 """
-<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
+<q-td :props="props" :class="(props.row._editing_row || props.row._editing_field) ? 'bg-blue-1' : ''">
   <div v-if="!props.row._editing_field || props.row._editing_field!='minimum_stock'"
        @click="props.row._editing_row ? props.row._editing_field='minimum_stock' : null"
        @dblclick="props.row._editing_field='minimum_stock'">
@@ -308,7 +308,7 @@ def products_page() -> None:
             table.add_slot(
                 "body-cell-status",
                 """
-<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
+<q-td :props="props" :class="(props.row._editing_row || props.row._editing_field) ? 'bg-blue-1' : ''">
   <div v-if="!props.row._editing_field || props.row._editing_field!='status'"
        @click="props.row._editing_row ? props.row._editing_field='status' : null"
        @dblclick="props.row._editing_field='status'">
@@ -329,7 +329,7 @@ def products_page() -> None:
             table.add_slot(
     "body-cell-category",
     f"""
-<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
+<q-td :props="props" :class="(props.row._editing_row || props.row._editing_field) ? 'bg-blue-1' : ''">
   <div v-if="props.row._editing_field !== 'category'"
        @click="props.row._editing_row ? props.row._editing_field = 'category' : null"
        @dblclick="props.row._editing_field = 'category'">
@@ -352,7 +352,7 @@ def products_page() -> None:
             table.add_slot(
     "body-cell-storage_location",
     f"""
-<q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
+<q-td :props="props" :class="(props.row._editing_row || props.row._editing_field)? 'bg-blue-1' : ''">
     <div v-if="props.row._editing_field !== 'storage_location'"
             @click="props.row._editing_row ? props.row._editing_field = 'storage_location' : null"
             @dblclick="props.row._editing_field = 'storage_location'">
