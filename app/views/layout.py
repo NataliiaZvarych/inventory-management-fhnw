@@ -22,6 +22,13 @@ def render_shell(
 	if current_user is None:
 		current_user = auth_current_user
 
+	def logout() -> None:
+		auth_current_user["user_id"] = None
+		auth_current_user["name"] = None
+		auth_current_user["role"] = None
+		ui.navigate.to("/")
+
+
 	with ui.row().classes("w-full min-h-screen gap-0 bg-[#f5f7fb] flex-nowrap"):
 		with ui.card().classes(
 			"w-72 min-w-72 min-h-screen shrink-0 rounded-none border-r border-gray-200 bg-white shadow-none"
@@ -55,28 +62,26 @@ def render_shell(
 					ui.label(title).classes("text-4xl font-bold text-gray-900")
 					ui.label(subtitle).classes("text-base text-gray-500")
 
-				with ui.card().classes("ml-auto rounded-2xl bg-white px-4 py-3 shadow-sm"):
-					with ui.row().classes("items-center gap-3"):
+				user_name = (
+					current_user["name"] if current_user and current_user.get("name") 
+					else "User"
+				)
+				user_role = (
+					current_user["role"] if current_user and current_user.get("role") 
+					else "User"
+				)
 
-						user_name = (
-							current_user["name"]
-							if current_user and current_user.get("name")
-							else "Unknown"
-						)
+				with ui.button().props("flat no-caps").classes("ml-auto rounded-2xl bg-white px-4 py-3 shadow-sm hover:bg-gray-50"):
 
-						user_role = (
-							current_user["role"]
-							if current_user and current_user.get("role")
-							else "-"
-						)
-
+												   
+					with ui.row().classes("items-center gap-3"):											 					
 						ui.label(user_name[0].upper()).classes(
 							"flex h-10 w-10 items-center justify-center "
 							"rounded-full bg-[#e8f1ff] text-sm "
 							"font-bold text-[#2f6fb1]"
 						)
 
-						with ui.column().classes("gap-0"):
+						with ui.column().classes("gap-0 items-start"):
 							ui.label(user_name).classes(
 								"font-semibold text-gray-900"
 							)
@@ -84,5 +89,12 @@ def render_shell(
 							ui.label(user_role).classes(
 								"text-sm text-gray-500"
 							)
+							ui.icon("expand_more").classes("text-gray-500")
+
+					with ui.menu().classes("rounded-xl shadow-lg"):
+						ui.menu_item("Profile")
+						ui.menu_item("Settings")
+						ui.separator()
+						ui.menu_item("Logout", on_click=logout)
 
 			content_builder()
