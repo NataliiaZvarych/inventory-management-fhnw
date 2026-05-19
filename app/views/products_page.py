@@ -258,21 +258,21 @@ def products_page() -> None:
             with ui.card().classes("w-full rounded-2xl p-4 shadow-sm border border-gray-100"):
                 with ui.row().classes("w-full items-center gap-3"):
                     search_input = ui.input(placeholder="Search products...").props("outlined dense clearable")
-                    search_input.classes("w-[40%]")
+                    search_input.classes("w-[35%]")
 
                     category_options = {"all": "All Categories", **{str(c.category_id): c.name for c in categories}}
                     category_select = ui.select(
                         options=category_options,
                         value="all",
                     ).props("outlined dense")
-                    category_select.classes("w-[25%]")
+                    category_select.classes("w-[23%]")
 
                     status_options = {"all": "All Statuses", **{s: s.capitalize() for s in status_values}}
                     status_select = ui.select(
                         options=status_options,
                         value="all",
                     ).props("outlined dense")
-                    status_select.classes("w-[25%]")
+                    status_select.classes("w-[23%]")
 
                     def reset_filters() -> None:
                         search_input.value = ""
@@ -283,6 +283,8 @@ def products_page() -> None:
                         status_filter_value["value"] = "all"
                         refresh_table()
 
+                    ui.space()
+                    
                     ui.button("Reset", icon="refresh", on_click=reset_filters).props("flat")
 
                     search_input.on_value_change(lambda e: (search_value.__setitem__("value", e.value or ""), refresh_table()))
@@ -362,7 +364,7 @@ def products_page() -> None:
 <q-td :props="props" :class="props.row._editing_row ? 'bg-blue-1' : ''">
   <div v-if="props.row._editing_field !== 'category'"
        @click="props.row._editing_row ? props.row._editing_field = 'category' : null">
-    <q-badge rounded color="blue-1" text-color="primary">{{{{ props.value }}}}</q-badge>
+    <span class="text-slate-700 font-medium">{{{{ props.value }}}}</span>
   </div>
   <q-select v-else dense emit-value map-options v-model="props.row.category_id"
             :options='{cat_options_json}'
