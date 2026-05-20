@@ -1,0 +1,6 @@
+id,name,quantity,status
+1,T-Shirt Weiß,7,available
+2,Jeans Blau,8,available
+3,Jacke Schwarz,2,low_stock
+4,Pullover Grau,11,available
+5,Pullover Test,3,low_stock
