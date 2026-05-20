@@ -420,6 +420,11 @@ app/docs
 
 ![Test Case 2](app/docs/Test%20Cases%202.jpg)
 
+### Full PDF Reports
+
+- [Automated Testing Report](app/docs/Automated%20Testing%20Report%201.pdf)
+- [Automatisierter Testbericht](app/docs/Automatisierter%20Testberich1%20Aydin.pdf)
+
 ---
 
 ## 👥 Team & Contributions
