@@ -176,7 +176,7 @@ def categories_page() -> None:
                         )
 
                 ui.button(
-                    "+ Add Category",
+                    "+ ADD CATEGORY",
                     on_click=add_dialog.open,
                 ).classes(
                     "bg-blue-600 text-white"
@@ -209,94 +209,166 @@ def categories_page() -> None:
             ):
 
                 with ui.card().classes(
-                    "p-4 rounded-2xl shadow-sm flex-1"
+                    "p-4 rounded-2xl shadow-sm flex-1 min-w-40"
                 ):
-                    ui.label(
-                        str(total_categories)
-                    ).classes(
-                        "text-2xl font-bold"
-                    )
+                    with ui.row().classes(
+                        "items-center gap-3"
+                    ):
+                        ui.icon(
+                            "category"
+                        ).classes(
+                            "text-blue-500 text-2xl"
+                        )
 
-                    ui.label(
-                        "Total Categories"
-                    ).classes(
-                        "text-xs text-gray-500"
-                    )
+                        with ui.column().classes(
+                            "gap-0"
+                        ):
+                            ui.label(
+                                str(total_categories)
+                            ).classes(
+                                "text-xl font-bold"
+                            )
+
+                            ui.label(
+                                "Total Categories"
+                            ).classes(
+                                "text-xs text-gray-500"
+                            )
 
                 with ui.card().classes(
-                    "p-4 rounded-2xl shadow-sm flex-1"
+                    "p-4 rounded-2xl shadow-sm flex-1 min-w-40"
                 ):
-                    ui.label(
-                        str(sale_categories)
-                    ).classes(
-                        "text-2xl font-bold"
-                    )
+                    with ui.row().classes(
+                        "items-center gap-3"
+                    ):
+                        ui.icon(
+                            "sell"
+                        ).classes(
+                            "text-green-500 text-2xl"
+                        )
 
-                    ui.label(
-                        "Sale Categories"
-                    ).classes(
-                        "text-xs text-gray-500"
-                    )
+                        with ui.column().classes(
+                            "gap-0"
+                        ):
+                            ui.label(
+                                str(sale_categories)
+                            ).classes(
+                                "text-xl font-bold"
+                            )
+
+                            ui.label(
+                                "Sale Categories"
+                            ).classes(
+                                "text-xs text-gray-500"
+                            )
 
                 with ui.card().classes(
-                    "p-4 rounded-2xl shadow-sm flex-1"
+                    "p-4 rounded-2xl shadow-sm flex-1 min-w-40"
                 ):
-                    ui.label(
-                        str(loan_categories)
-                    ).classes(
-                        "text-2xl font-bold"
-                    )
+                    with ui.row().classes(
+                        "items-center gap-3"
+                    ):
+                        ui.icon(
+                            "handshake"
+                        ).classes(
+                            "text-orange-500 text-2xl"
+                        )
 
-                    ui.label(
-                        "Loan Categories"
-                    ).classes(
-                        "text-xs text-gray-500"
-                    )
+                        with ui.column().classes(
+                            "gap-0"
+                        ):
+                            ui.label(
+                                str(loan_categories)
+                            ).classes(
+                                "text-xl font-bold"
+                            )
+
+                            ui.label(
+                                "Loan Categories"
+                            ).classes(
+                                "text-xs text-gray-500"
+                            )
 
                 with ui.card().classes(
-                    "p-4 rounded-2xl shadow-sm flex-1"
+                    "p-4 rounded-2xl shadow-sm flex-1 min-w-40"
                 ):
-                    ui.label(
-                        str(used_categories)
-                    ).classes(
-                        "text-2xl font-bold"
-                    )
+                    with ui.row().classes(
+                        "items-center gap-3"
+                    ):
+                        ui.icon(
+                            "inventory_2"
+                        ).classes(
+                            "text-purple-500 text-2xl"
+                        )
 
-                    ui.label(
-                        "Used Categories"
-                    ).classes(
-                        "text-xs text-gray-500"
-                    )
+                        with ui.column().classes(
+                            "gap-0"
+                        ):
+                            ui.label(
+                                str(used_categories)
+                            ).classes(
+                                "text-xl font-bold"
+                            )
+
+                            ui.label(
+                                "Used Categories"
+                            ).classes(
+                                "text-xs text-gray-500"
+                            )
 
                 with ui.card().classes(
-                    "p-4 rounded-2xl shadow-sm flex-1"
+                    "p-4 rounded-2xl shadow-sm flex-1 min-w-40"
                 ):
-                    ui.label(
-                        str(empty_categories)
-                    ).classes(
-                        "text-2xl font-bold"
-                    )
+                    with ui.row().classes(
+                        "items-center gap-3"
+                    ):
+                        ui.icon(
+                            "remove_circle"
+                        ).classes(
+                            "text-red-500 text-2xl"
+                        )
 
-                    ui.label(
-                        "Empty Categories"
-                    ).classes(
-                        "text-xs text-gray-500"
-                    )
+                        with ui.column().classes(
+                            "gap-0"
+                        ):
+                            ui.label(
+                                str(empty_categories)
+                            ).classes(
+                                "text-xl font-bold"
+                            )
+
+                            ui.label(
+                                "Empty Categories"
+                            ).classes(
+                                "text-xs text-gray-500"
+                            )
 
                 with ui.card().classes(
-                    "p-4 rounded-2xl shadow-sm flex-1"
+                    "p-4 rounded-2xl shadow-sm flex-1 min-w-40"
                 ):
-                    ui.label(
-                        str(total_products)
-                    ).classes(
-                        "text-2xl font-bold"
-                    )
+                    with ui.row().classes(
+                        "items-center gap-3"
+                    ):
+                        ui.icon(
+                            "widgets"
+                        ).classes(
+                            "text-blue-500 text-2xl"
+                        )
 
-                    ui.label(
-                        "Total Products"
-                    ).classes(
-                        "text-xs text-gray-500"
-                    )
+                        with ui.column().classes(
+                            "gap-0"
+                        ):
+                            ui.label(
+                                str(total_products)
+                            ).classes(
+                                "text-xl font-bold"
+                            )
+
+                            ui.label(
+                                "Total Products"
+                            ).classes(
+                                "text-xs text-gray-500"
+                            )
 
             ui.separator().classes("my-4")
 
