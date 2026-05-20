@@ -22,6 +22,36 @@ def render_shell(
 	if current_user is None:
 		current_user = auth_current_user
 
+	def logout() -> None:
+		auth_current_user["user_id"] = None
+		auth_current_user["name"] = None
+		auth_current_user["role"] = None
+		ui.navigate.to("/")
+
+	def open_profile() -> None:
+		with ui.dialog() as dialog, ui.card().classes("w-80 rounded-xl p-5"):
+			ui.label("Profile").classes("text-xl font-bold text-gray-900")
+			ui.separator()
+			with ui.column().classes("gap-2 mt-2"):
+				ui.label(f"👤 Name: {current_user.get('name', 'User')}")
+				ui.label(f"🛡 Role: {current_user.get('role', '-')}")
+				ui.label(f"🆔 User ID: {current_user.get('user_id', '-')}")
+			ui.button("Close", on_click=dialog.close).props("flat") .classes("mt-4 self-end")
+		dialog.open()	
+	def open_settings() -> None:
+		with ui.dialog() as dialog, ui.card().classes("w-80 rounded-xl p-5"):
+			ui.label("Settings").classes("text-xl font-bold text-gray-500")
+			ui.separator()
+
+			with ui.column().classes("gap-2 mt-2"):
+				ui.label("🎨 Theme: Light mode")
+				ui.label("🌐 Language: English")
+				ui.label("🔔 Notifications: Enabled")
+
+			
+			ui.button("Close", on_click=dialog.close).props("flat") .classes("mt-4 self-end")
+		dialog.open()
+
 	with ui.row().classes("w-full min-h-screen gap-0 bg-[#f5f7fb] flex-nowrap"):
 		with ui.card().classes(
 			"w-72 min-w-72 min-h-screen shrink-0 rounded-none border-r border-gray-200 bg-white shadow-none"
@@ -55,34 +85,43 @@ def render_shell(
 					ui.label(title).classes("text-4xl font-bold text-gray-900")
 					ui.label(subtitle).classes("text-base text-gray-500")
 
-				with ui.card().classes("ml-auto rounded-2xl bg-white px-4 py-3 shadow-sm"):
-					with ui.row().classes("items-center gap-3"):
+				user_name = (
+					current_user["name"] if current_user and current_user.get("name") 
+					else "User"
+				)
+				user_role = (
+					current_user["role"] if current_user and current_user.get("role") 
+					else "User"
+				)
 
-						user_name = (
-							current_user["name"]
-							if current_user and current_user.get("name")
-							else "Unknown"
-						)
+				with ui.button().props("flat no-caps").classes("" \
+					"ml-auto rounded-2xl bg-white px-3 py-3 shadow-sm "
+					"border border-gray-100 hover:bg-[#f8fafc] hover:shadow-md"
+					"transition-all duration-200"
+				):
 
-						user_role = (
-							current_user["role"]
-							if current_user and current_user.get("role")
-							else "-"
-						)
-
+												   
+					with ui.row().classes("items-center gap-2 no-wrap"):											 					
 						ui.label(user_name[0].upper()).classes(
-							"flex h-10 w-10 items-center justify-center "
+							"flex h-8 w-8 items-center justify-center "
 							"rounded-full bg-[#e8f1ff] text-sm "
 							"font-bold text-[#2f6fb1]"
 						)
 
-						with ui.column().classes("gap-0"):
+						with ui.column().classes("gap-0 items-start"):
 							ui.label(user_name).classes(
-								"font-semibold text-gray-900"
+								"text-sm font-semibold text-gray-900 leading-none"
 							)
 
 							ui.label(user_role).classes(
-								"text-sm text-gray-500"
+								"text-xs text-gray-500"
 							)
+						ui.icon("keyboard_arrow_down").classes("text-gray-400 text-xs")
+
+					with ui.menu().classes("rounded-xl shadow-lg"):
+						ui.menu_item("Profile", on_click=open_profile)
+						ui.menu_item("Settings", on_click=open_settings)
+						ui.separator()
+						ui.menu_item("Logout", on_click=logout)
 
 			content_builder()
