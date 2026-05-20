@@ -389,7 +389,6 @@ python -m pytest app/tests -v
 ### Categories Page
 ![Categories Screenshot](app/docs/Screenshot%20Tests-main%201.jpg)
 
-### Edit Category Dialog
 ![Edit Dialog](app/docs/Screenshot%20Tests-main%202.jpg)
 
 **Test Case Documentation:**
