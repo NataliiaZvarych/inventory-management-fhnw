@@ -182,6 +182,122 @@ def categories_page() -> None:
                     "bg-blue-600 text-white"
                 )
 
+            total_categories = len(rows)
+
+            sale_categories = len(
+                [row for row in rows if row["type"] == "sale"]
+            )
+
+            loan_categories = len(
+                [row for row in rows if row["type"] == "loan"]
+            )
+
+            used_categories = len(
+                [row for row in rows if row["products"] > 0]
+            )
+
+            empty_categories = len(
+                [row for row in rows if row["products"] == 0]
+            )
+
+            total_products = sum(
+                row["products"] for row in rows
+            )
+
+            with ui.row().classes(
+                "w-full gap-4 mt-6"
+            ):
+
+                with ui.card().classes(
+                    "p-4 rounded-2xl shadow-sm flex-1"
+                ):
+                    ui.label(
+                        str(total_categories)
+                    ).classes(
+                        "text-2xl font-bold"
+                    )
+
+                    ui.label(
+                        "Total Categories"
+                    ).classes(
+                        "text-xs text-gray-500"
+                    )
+
+                with ui.card().classes(
+                    "p-4 rounded-2xl shadow-sm flex-1"
+                ):
+                    ui.label(
+                        str(sale_categories)
+                    ).classes(
+                        "text-2xl font-bold"
+                    )
+
+                    ui.label(
+                        "Sale Categories"
+                    ).classes(
+                        "text-xs text-gray-500"
+                    )
+
+                with ui.card().classes(
+                    "p-4 rounded-2xl shadow-sm flex-1"
+                ):
+                    ui.label(
+                        str(loan_categories)
+                    ).classes(
+                        "text-2xl font-bold"
+                    )
+
+                    ui.label(
+                        "Loan Categories"
+                    ).classes(
+                        "text-xs text-gray-500"
+                    )
+
+                with ui.card().classes(
+                    "p-4 rounded-2xl shadow-sm flex-1"
+                ):
+                    ui.label(
+                        str(used_categories)
+                    ).classes(
+                        "text-2xl font-bold"
+                    )
+
+                    ui.label(
+                        "Used Categories"
+                    ).classes(
+                        "text-xs text-gray-500"
+                    )
+
+                with ui.card().classes(
+                    "p-4 rounded-2xl shadow-sm flex-1"
+                ):
+                    ui.label(
+                        str(empty_categories)
+                    ).classes(
+                        "text-2xl font-bold"
+                    )
+
+                    ui.label(
+                        "Empty Categories"
+                    ).classes(
+                        "text-xs text-gray-500"
+                    )
+
+                with ui.card().classes(
+                    "p-4 rounded-2xl shadow-sm flex-1"
+                ):
+                    ui.label(
+                        str(total_products)
+                    ).classes(
+                        "text-2xl font-bold"
+                    )
+
+                    ui.label(
+                        "Total Products"
+                    ).classes(
+                        "text-xs text-gray-500"
+                    )
+
             ui.separator().classes("my-4")
 
             if not rows:
@@ -326,9 +442,13 @@ def categories_page() -> None:
             ) -> None:
 
                 selected_category_id["value"] = row_data["category_id"]
+
                 edit_name_input.value = row_data["name"]
+
                 edit_type_input.value = row_data["type"]
+
                 edit_message.set_text("")
+
                 edit_dialog.open()
 
             def delete_category(
@@ -337,6 +457,7 @@ def categories_page() -> None:
 
                 try:
                     with get_session() as session:
+
                         category_service.delete_category(
                             session,
                             category_id,
@@ -350,6 +471,7 @@ def categories_page() -> None:
                     ui.navigate.reload()
 
                 except ValueError as error:
+
                     ui.notify(
                         str(error),
                         color="red",
