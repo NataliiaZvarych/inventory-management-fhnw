@@ -20,7 +20,11 @@ def _build_rows() -> list[dict]:
     category_dao = CategoryDAO(engine)
     product_dao = ProductDAO(engine)
     category_service = CategoryServices(category_dao, product_dao)
-    product_service = ProductServices(product_dao, category_dao, StorageLocationDAO(engine))
+    product_service = ProductServices(
+        product_dao,
+        category_dao,
+        StorageLocationDAO(engine),
+    )
 
     with get_session() as session:
         categories = category_service.get_all_categories(session)
@@ -50,8 +54,12 @@ def categories_page() -> None:
         with ui.card().classes("rounded-3xl p-6 shadow-sm w-full"):
             with ui.row().classes("w-full items-center justify-between"):
                 with ui.column():
-                    ui.label("Categories").classes("text-xl font-semibold text-gray-900")
-                    ui.label("Manage product groups and category types.").classes("text-sm text-gray-500")
+                    ui.label("Categories").classes(
+                        "text-xl font-semibold text-gray-900"
+                    )
+                    ui.label(
+                        "Manage product groups and category types."
+                    ).classes("text-sm text-gray-500")
 
                 add_dialog = ui.dialog()
 
@@ -85,7 +93,10 @@ def categories_page() -> None:
                                     },
                                 )
 
-                            ui.notify("Category created successfully.", color="green")
+                            ui.notify(
+                                "Category created successfully.",
+                                color="green",
+                            )
                             add_dialog.close()
                             ui.navigate.reload()
 
@@ -93,24 +104,55 @@ def categories_page() -> None:
                             message.set_text(str(error))
 
                     with ui.row().classes("w-full justify-end gap-2 mt-4"):
-                        ui.button("Cancel", on_click=add_dialog.close).props("flat")
-                        ui.button("Save", on_click=save_category).classes("bg-blue-600 text-white")
+                        ui.button(
+                            "Cancel",
+                            on_click=add_dialog.close,
+                        ).props("flat")
+                        ui.button(
+                            "Save",
+                            on_click=save_category,
+                        ).classes("bg-blue-600 text-white")
 
-                ui.button("+ Add Category", on_click=add_dialog.open).classes("bg-blue-600 text-white")
+                ui.button(
+                    "+ Add Category",
+                    on_click=add_dialog.open,
+                ).classes("bg-blue-600 text-white")
 
             ui.separator().classes("my-4")
 
             if not rows:
-                ui.label("No categories found.").classes("text-base text-gray-500")
+                ui.label("No categories found.").classes(
+                    "text-base text-gray-500"
+                )
                 return
 
             table = ui.table(
                 columns=[
-                    {"name": "category_id", "label": "ID", "field": "category_id"},
-                    {"name": "name", "label": "Name", "field": "name"},
-                    {"name": "type", "label": "Type", "field": "type"},
-                    {"name": "products", "label": "Products", "field": "products"},
-                    {"name": "actions", "label": "Actions", "field": "actions"},
+                    {
+                        "name": "category_id",
+                        "label": "ID",
+                        "field": "category_id",
+                    },
+                    {
+                        "name": "name",
+                        "label": "Name",
+                        "field": "name",
+                    },
+                    {
+                        "name": "type",
+                        "label": "Type",
+                        "field": "type",
+                    },
+                    {
+                        "name": "products",
+                        "label": "Products",
+                        "field": "products",
+                    },
+                    {
+                        "name": "actions",
+                        "label": "Actions",
+                        "field": "actions",
+                    },
                 ],
                 rows=rows,
                 row_key="category_id",
@@ -132,33 +174,22 @@ def categories_page() -> None:
             )
 
             edit_dialog = ui.dialog()
-            edit_name_input = ui.input("Category name").classes("w-full")
-            edit_type_input = ui.select(
-                ["sale", "loan"],
-                label="Category type",
-                value="sale",
-            ).classes("w-full")
-            edit_message = ui.label("").classes("text-red-500 text-sm")
             selected_category_id = {"value": None}
-
-            def open_edit_dialog(row: dict) -> None:
-                selected_category_id["value"] = row["category_id"]
-                edit_name_input.value = row["name"]
-                edit_type_input.value = row["type"]
-                edit_message.set_text("")
-                edit_dialog.open()
+            edit_fields = {}
 
             def update_category() -> None:
                 category_id = selected_category_id["value"]
-                name = str(edit_name_input.value or "").strip()
-                category_type = str(edit_type_input.value or "sale").strip()
+                name = str(edit_fields["name"].value or "").strip()
+                category_type = str(edit_fields["type"].value or "sale").strip()
 
                 if category_id is None:
-                    edit_message.set_text("No category selected.")
+                    edit_fields["message"].set_text("No category selected.")
                     return
 
                 if not name:
-                    edit_message.set_text("Category name is required.")
+                    edit_fields["message"].set_text(
+                        "Category name is required."
+                    )
                     return
 
                 try:
@@ -172,24 +203,58 @@ def categories_page() -> None:
                             },
                         )
 
-                    ui.notify("Category updated successfully.", color="green")
+                    ui.notify(
+                        "Category updated successfully.",
+                        color="green",
+                    )
                     edit_dialog.close()
                     ui.navigate.reload()
 
                 except ValueError as error:
-                    edit_message.set_text(str(error))
+                    edit_fields["message"].set_text(str(error))
 
             with edit_dialog, ui.card().classes("rounded-2xl p-6 w-96"):
                 ui.label("Edit Category").classes("text-lg font-semibold")
 
-                edit_name_input
-                edit_type_input
-                edit_message
+                edit_fields["name"] = ui.input(
+                    "Category name"
+                ).classes("w-full")
+
+                edit_fields["type"] = ui.select(
+                    ["sale", "loan"],
+                    label="Category type",
+                    value="sale",
+                ).classes("w-full")
+
+                edit_fields["message"] = ui.label("").classes(
+                    "text-red-500 text-sm"
+                )
 
                 with ui.row().classes("w-full justify-end gap-2 mt-4"):
-                    ui.button("Cancel", on_click=edit_dialog.close).props("flat")
-                    ui.button("Save changes", on_click=update_category).classes("bg-blue-600 text-white")
+                    ui.button(
+                        "Cancel",
+                        on_click=edit_dialog.close,
+                    ).props("flat")
+                    ui.button(
+                        "Save changes",
+                        on_click=update_category,
+                    ).classes("bg-blue-600 text-white")
 
-            table.on("edit-category", lambda event: open_edit_dialog(event.args))
+            def open_edit_dialog(row: dict) -> None:
+                selected_category_id["value"] = row["category_id"]
+                edit_fields["name"].value = row["name"]
+                edit_fields["type"].value = row["type"]
+                edit_fields["message"].set_text("")
+                edit_dialog.open()
 
-    render_shell("Categories", "Organize products by category and track usage.", "/categories", content)
+            table.on(
+                "edit-category",
+                lambda event: open_edit_dialog(event.args),
+            )
+
+    render_shell(
+        "Categories",
+        "Organize products by category and track usage.",
+        "/categories",
+        content,
+    )
