@@ -1,3 +1,5 @@
+import hashlib
+
 from app.data_access.db import get_session, create_db_and_tables
 from app.models import Category, StorageLocation, User, Product
 
@@ -19,13 +21,47 @@ def seed_database():
 
         # 👤 Users (your team)
         users = [
-            User(name="Nataliia", role="admin"),
-            User(name="Mahmut", role="staff"),
-            User(name="Aydin", role="staff"),
-            User(name="Josselyn", role="admin"),
+            User(
+                name="Nataliia",
+                role="admin",
+                password_hash=hashlib.sha256(
+                    "admin123".encode()
+                ).hexdigest()
+            ),
+            User(
+                name="Josselyn",
+                role="admin",
+                password_hash=hashlib.sha256(
+                    "admin123".encode()
+                ).hexdigest()
+            ),
+            User(
+                name="Mahmut",
+                role="staff",
+                password_hash=hashlib.sha256(
+                    "staff123".encode()
+                ).hexdigest()
+            ),
+            User(
+                name="Aydin",
+                role="staff",
+                password_hash=hashlib.sha256(
+                    "staff123".encode()
+                ).hexdigest()
+            ),
         ]
 
-        session.add_all([electronics, office, tools, shelf_a1, shelf_a2, workshop] + users)
+        session.add_all(
+            [
+                electronics,
+                office,
+                tools,
+                shelf_a1,
+                shelf_a2,
+                workshop,
+            ] + users
+        )
+
         session.commit()
 
         # 🔄 Refresh to get IDs
