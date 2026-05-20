@@ -410,6 +410,16 @@ app/docs
 8. Status – pass or fail
 9. Comments – Additional notes or detected issues
 
+### Automated Test Overview
+
+![Automated Test Overview](app/docs/Automated%20Test%20Case%20Overview.jpg)
+
+### Example Test Cases
+
+![Test Case 1](app/docs/Test%20Cases%201.jpg)
+
+![Test Case 2](app/docs/Test%20Cases%202.jpg)
+
 ---
 
 ## 👥 Team & Contributions
