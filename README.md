@@ -384,6 +384,14 @@ python -m pytest app/tests -v
 - 0 failed
 - 0 errors
 
+## Testing Screenshots
+
+### Categories Page
+![Categories Screenshot](app/docs/Screenshot%20Tests-main%201.jpg)
+
+### Edit Category Dialog
+![Edit Dialog](app/docs/Screenshot%20Tests-main%202.jpg)
+
 **Test Case Documentation:**
 The project documentation includes:
 - detailed test cases
