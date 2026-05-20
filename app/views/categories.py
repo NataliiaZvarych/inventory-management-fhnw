@@ -104,15 +104,92 @@ def categories_page() -> None:
                 ui.label("No categories found.").classes("text-base text-gray-500")
                 return
 
-            ui.table(
+            table = ui.table(
                 columns=[
                     {"name": "category_id", "label": "ID", "field": "category_id"},
                     {"name": "name", "label": "Name", "field": "name"},
                     {"name": "type", "label": "Type", "field": "type"},
                     {"name": "products", "label": "Products", "field": "products"},
+                    {"name": "actions", "label": "Actions", "field": "actions"},
                 ],
                 rows=rows,
                 row_key="category_id",
             ).classes("w-full")
+
+            table.add_slot(
+                "body-cell-actions",
+                """
+                <q-td :props="props">
+                    <q-btn
+                        dense
+                        flat
+                        color="primary"
+                        icon="edit"
+                        @click="$parent.$emit('edit-category', props.row)"
+                    />
+                </q-td>
+                """,
+            )
+
+            edit_dialog = ui.dialog()
+            edit_name_input = ui.input("Category name").classes("w-full")
+            edit_type_input = ui.select(
+                ["sale", "loan"],
+                label="Category type",
+                value="sale",
+            ).classes("w-full")
+            edit_message = ui.label("").classes("text-red-500 text-sm")
+            selected_category_id = {"value": None}
+
+            def open_edit_dialog(row: dict) -> None:
+                selected_category_id["value"] = row["category_id"]
+                edit_name_input.value = row["name"]
+                edit_type_input.value = row["type"]
+                edit_message.set_text("")
+                edit_dialog.open()
+
+            def update_category() -> None:
+                category_id = selected_category_id["value"]
+                name = str(edit_name_input.value or "").strip()
+                category_type = str(edit_type_input.value or "sale").strip()
+
+                if category_id is None:
+                    edit_message.set_text("No category selected.")
+                    return
+
+                if not name:
+                    edit_message.set_text("Category name is required.")
+                    return
+
+                try:
+                    with get_session() as session:
+                        category_service.update_category(
+                            session,
+                            int(category_id),
+                            {
+                                "name": name,
+                                "type": category_type,
+                            },
+                        )
+
+                    ui.notify("Category updated successfully.", color="green")
+                    edit_dialog.close()
+                    ui.navigate.reload()
+
+                except ValueError as error:
+                    edit_message.set_text(str(error))
+
+            with edit_dialog, ui.card().classes("rounded-2xl p-6 w-96"):
+                ui.label("Edit Category").classes("text-lg font-semibold")
+
+                edit_name_input
+                edit_type_input
+                edit_message
+
+                with ui.row().classes("w-full justify-end gap-2 mt-4"):
+                    ui.button("Cancel", on_click=edit_dialog.close).props("flat")
+                    ui.button("Save changes", on_click=update_category).classes("bg-blue-600 text-white")
+
+            table.on("edit-category", lambda event: open_edit_dialog(event.args))
 
     render_shell("Categories", "Organize products by category and track usage.", "/categories", content)
